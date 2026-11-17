@@ -16,13 +16,18 @@ import {
 } from 'lucide-react';
 import { CONTACT_INFO } from '../data/initialPortfolio';
 
-if (typeof Worker !== 'undefined' && !pdfjs.GlobalWorkerOptions.workerPort) {
-  pdfjs.GlobalWorkerOptions.workerPort = new Worker(
-    new URL('../workers/pdfWorker.ts', import.meta.url),
-    { type: 'module' }
-  );
+if (typeof window !== 'undefined' && typeof Worker !== 'undefined' && !pdfjs.GlobalWorkerOptions.workerPort) {
+  try {
+    pdfjs.GlobalWorkerOptions.workerPort = new Worker(
+      new URL('../workers/pdfWorker.ts', import.meta.url),
+      { type: 'module' }
+    );
+  } catch {
+    // Fallback to pdf.js default worker behavior or iframe if module Worker is blocked
+  }
 }
 
+const STATIC_CV_URL = '/assets/aistudio/CV_de_Ce_drine_PIGEON-SCHNEIDER_ac537d40.pdf';
 const ZOOM_STEPS = [0.75, 1, 1.25, 1.5] as const;
 
 export function CvPreviewCard() {
@@ -34,6 +39,7 @@ export function CvPreviewCard() {
   const [scale, setScale] = useState<number | 'fit'>('fit');
   const [tallView, setTallView] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
+  const [cvFileUrl, setCvFileUrl] = useState<string>('/api/cv?inline=1');
   const [pdfError, setPdfError] = useState(false);
 
   useEffect(() => {
@@ -221,12 +227,18 @@ export function CvPreviewCard() {
             {!pdfError ? (
               <div className="flex min-h-[360px] justify-center">
                 <Document
-                  file="/api/cv?inline=1"
+                  file={cvFileUrl}
                   onLoadSuccess={({ numPages: total }) => {
                     setNumPages(total);
                     setPdfError(false);
                   }}
-                  onLoadError={() => setPdfError(true)}
+                  onLoadError={() => {
+                    if (cvFileUrl !== STATIC_CV_URL) {
+                      setCvFileUrl(STATIC_CV_URL);
+                    } else {
+                      setPdfError(true);
+                    }
+                  }}
                   loading={
                     <div className="flex h-[420px] items-center justify-center text-sm font-medium text-[#252525]/70 dark:text-[#F5EBDD]/75">
                       Chargement du CV en cours…
@@ -245,7 +257,7 @@ export function CvPreviewCard() {
             ) : (
               /* Secured iframe fallback */
               <iframe
-                src="/api/cv?inline=1#view=FitH"
+                src={`${STATIC_CV_URL}#view=FitH`}
                 title="CV de Cédrine Pigeon-Schneider"
                 sandbox="allow-same-origin allow-scripts"
                 className="h-[540px] w-full rounded-xl border-0 bg-white"
@@ -329,7 +341,16 @@ export function CvPreviewCard() {
             <div className="flex-1 overflow-auto bg-[#F5EBDD]/35 p-4 dark:bg-[#181416] sm:p-6">
               {!pdfError ? (
                 <div className="flex justify-center">
-                  <Document file="/api/cv?inline=1">
+                  <Document
+                    file={cvFileUrl}
+                    onLoadError={() => {
+                      if (cvFileUrl !== STATIC_CV_URL) {
+                        setCvFileUrl(STATIC_CV_URL);
+                      } else {
+                        setPdfError(true);
+                      }
+                    }}
+                  >
                     <Page
                       pageNumber={pageNumber}
                       width={Math.min(typeof window !== 'undefined' ? window.innerWidth - 96 : 860, 860)}
@@ -341,7 +362,7 @@ export function CvPreviewCard() {
                 </div>
               ) : (
                 <iframe
-                  src="/api/cv?inline=1#view=FitH"
+                  src={`${STATIC_CV_URL}#view=FitH`}
                   title="CV complet de Cédrine Pigeon-Schneider"
                   sandbox="allow-same-origin allow-scripts"
                   className="h-full w-full rounded-xl border-0 bg-white"

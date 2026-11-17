@@ -123,6 +123,13 @@ export function StudioModal({ open, onClose, onPublishedUpdate }: StudioModalPro
       setStatusLoading(true);
       try {
         const res = await fetch('/api/studio/status', { headers: getHeaders() });
+        const contentType = res.headers.get('content-type') || '';
+        if (!res.ok || !contentType.includes('application/json')) {
+          setAuthError(
+            "L’espace d’édition en direct fonctionne uniquement avec le serveur Node.js (non disponible sur un hébergement statique Netlify)."
+          );
+          return;
+        }
         const data = await res.json();
         setIsInitialized(data.isInitialized);
         setAuthenticated(data.authenticated);

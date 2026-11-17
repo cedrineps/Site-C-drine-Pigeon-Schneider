@@ -82,14 +82,25 @@ export default function App() {
   useEffect(() => {
     let active = true;
     fetch('/api/portfolio')
-      .then((res) => (res.ok ? res.json() : null))
+      .then((res) => {
+        const contentType = res.headers.get('content-type') || '';
+        if (!res.ok || !contentType.includes('application/json')) {
+          return null;
+        }
+        return res.json();
+      })
       .then((data: PortfolioData | null) => {
-        if (active && data) {
+        if (
+          active &&
+          data &&
+          Array.isArray(data.projects) &&
+          Array.isArray(data.moodboard)
+        ) {
           setPortfolio(data);
         }
       })
       .catch(() => {
-        // Keep initial data if offline
+        // Keep initial data when deployed statically or offline
       });
     return () => {
       active = false;

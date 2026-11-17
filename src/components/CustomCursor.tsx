@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { motion, useMotionValue, useSpring } from 'motion/react';
+import { AnimatePresence, motion, useMotionValue, useSpring } from 'motion/react';
 import { SectionTheme } from '../types/portfolio';
 
 const CURSOR_COLORS: Record<SectionTheme, string> = {
   cream: '#C94F7C',
-  coral: '#D46D62',
-  lilac: '#8B68C9',
-  yellow: '#C99616',
-  sage: '#5E7A44',
+  coral: '#C45347',
+  lilac: '#6F4FA6',
+  yellow: '#8D690B',
+  sage: '#4F6638',
   pink: '#C94F7C',
 };
 
@@ -33,8 +33,8 @@ export function CustomCursor({ activeTheme, reducedMotion, darkMode = false }: C
 
   const rawX = useMotionValue(-100);
   const rawY = useMotionValue(-100);
-  const ringX = useSpring(rawX, { stiffness: 360, damping: 28, mass: 0.45 });
-  const ringY = useSpring(rawY, { stiffness: 360, damping: 28, mass: 0.45 });
+  const ringX = useSpring(rawX, { stiffness: 380, damping: 30, mass: 0.4 });
+  const ringY = useSpring(rawY, { stiffness: 380, damping: 30, mass: 0.4 });
 
   useEffect(() => {
     if (reducedMotion) return;
@@ -48,21 +48,26 @@ export function CustomCursor({ activeTheme, reducedMotion, darkMode = false }: C
       const target = e.target as HTMLElement | null;
       if (target) {
         const labelEl = target.closest('[data-cursor]') as HTMLElement | null;
-        setCursorLabel(labelEl?.dataset.cursor || null);
+        const nextLabel = labelEl?.dataset.cursor?.trim() || null;
+        setCursorLabel(nextLabel);
         const interactive = Boolean(
-          target.closest('a, button, input, textarea, select, [role="button"], [data-interactive="true"]')
+          target.closest(
+            'a, button, input, textarea, select, [role="button"], [data-interactive="true"]'
+          )
         );
-        setIsInteractive(interactive || Boolean(labelEl));
+        setIsInteractive(interactive || Boolean(nextLabel));
       }
     };
 
     const handleLeave = () => setVisible(false);
 
     window.addEventListener('mousemove', handleMove, { passive: true });
+    window.addEventListener('blur', handleLeave);
     document.addEventListener('mouseleave', handleLeave);
 
     return () => {
       window.removeEventListener('mousemove', handleMove);
+      window.removeEventListener('blur', handleLeave);
       document.removeEventListener('mouseleave', handleLeave);
     };
   }, [reducedMotion, rawX, rawY]);
@@ -73,41 +78,61 @@ export function CustomCursor({ activeTheme, reducedMotion, darkMode = false }: C
 
   return (
     <>
-      {/* Outer spring halo */}
+      {/* Outer spring follower: never uses CSS scale() on text and never nests overlapping borders */}
       <motion.div
         aria-hidden="true"
         style={{ x: ringX, y: ringY }}
-        animate={{
-          scale: cursorLabel ? 1.85 : isInteractive ? 1.45 : 1,
-        }}
-        transition={{ type: 'spring', stiffness: 320, damping: 22 }}
-        className="pointer-events-none fixed left-0 top-0 z-[90] -ml-4 -mt-4 hidden h-8 w-8 items-center justify-center rounded-full border-2 md:flex"
+        className="pointer-events-none fixed left-0 top-0 z-[90] hidden md:block"
       >
-        <div
-          className="h-full w-full rounded-full transition-colors duration-300"
-          style={{
-            border: `2px solid ${color}`,
-            backgroundColor: cursorLabel ? `${color}EE` : isInteractive ? `${color}22` : 'transparent',
-          }}
-        />
-        {cursorLabel && (
-          <span
-            className={`absolute text-[7px] font-bold tracking-wider uppercase ${
-              darkMode ? 'text-[#1E1B18]' : 'text-white'
-            }`}
-          >
-            {cursorLabel}
-          </span>
-        )}
+        <div className="-translate-x-1/2 -translate-y-1/2">
+          <AnimatePresence mode="wait" initial={false}>
+            {cursorLabel ? (
+              <motion.div
+                key="cursor-pill"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.14, ease: 'easeOut' }}
+                style={{
+                  backgroundColor: color,
+                  borderColor: darkMode ? 'rgba(30, 27, 24, 0.25)' : 'rgba(255, 255, 255, 0.5)',
+                }}
+                className="flex items-center justify-center rounded-full border-[1.5px] px-3 py-1.5 shadow-[0_8px_20px_-6px_rgba(37,37,37,0.35)]"
+              >
+                <span
+                  className={`block whitespace-nowrap text-[11px] leading-none font-bold tracking-[0.07em] uppercase antialiased ${
+                    darkMode ? 'text-[#1E1B18]' : 'text-white'
+                  }`}
+                >
+                  {cursorLabel}
+                </span>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="cursor-ring"
+                initial={false}
+                animate={{
+                  width: isInteractive ? 38 : 26,
+                  height: isInteractive ? 38 : 26,
+                  borderColor: color,
+                  backgroundColor: isInteractive ? `${color}1F` : 'rgba(0,0,0,0)',
+                }}
+                transition={{ type: 'spring', stiffness: 360, damping: 26 }}
+                className="rounded-full border-[1.75px]"
+              />
+            )}
+          </AnimatePresence>
+        </div>
       </motion.div>
 
-      {/* Crisp inner center dot */}
+      {/* Crisp inner center dot when no word pill is shown */}
       {!cursorLabel && (
         <motion.div
           aria-hidden="true"
           style={{ x: rawX, y: rawY, backgroundColor: color }}
-          animate={{ scale: isInteractive ? 0.5 : 1 }}
-          className="pointer-events-none fixed left-0 top-0 z-[91] -ml-1 -mt-1 hidden h-2 w-2 rounded-full transition-colors duration-300 md:block"
+          animate={{ scale: isInteractive ? 0.55 : 1 }}
+          transition={{ duration: 0.14 }}
+          className="pointer-events-none fixed left-0 top-0 z-[91] -ml-1 -mt-1 hidden h-2 w-2 rounded-full md:block"
         />
       )}
     </>

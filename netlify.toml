@@ -1,0 +1,23 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[[redirects]]
+  from = "/api/cv"
+  to = "/assets/aistudio/CV_de_Ce_drine_PIGEON-SCHNEIDER_ac537d40.pdf"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/moodboard-pdf"
+  to = "/assets/aistudio/Moodboard_-_copie_e766ab12.pdf"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
