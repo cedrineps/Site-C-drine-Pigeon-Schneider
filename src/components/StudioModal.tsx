@@ -126,7 +126,7 @@ export function StudioModal({ open, onClose, onPublishedUpdate }: StudioModalPro
         const contentType = res.headers.get('content-type') || '';
         if (!res.ok || !contentType.includes('application/json')) {
           setAuthError(
-            "L’espace d’édition en direct fonctionne uniquement avec le serveur Node.js (non disponible sur un hébergement statique Netlify)."
+            "L’espace d’édition en direct fonctionne uniquement avec le serveur Node.js (non disponible sur un hébergement statique GitHub Pages / Netlify)."
           );
           return;
         }

@@ -15,6 +15,7 @@ import {
   ZoomOut,
 } from 'lucide-react';
 import { CONTACT_INFO } from '../data/initialPortfolio';
+import { STATIC_CV_PDF_PATH, withBase } from '../utils/assetUrl';
 
 if (typeof window !== 'undefined' && typeof Worker !== 'undefined' && !pdfjs.GlobalWorkerOptions.workerPort) {
   try {
@@ -27,10 +28,15 @@ if (typeof window !== 'undefined' && typeof Worker !== 'undefined' && !pdfjs.Glo
   }
 }
 
-const STATIC_CV_URL = '/assets/aistudio/CV_de_Ce_drine_PIGEON-SCHNEIDER_ac537d40.pdf';
 const ZOOM_STEPS = [0.75, 1, 1.25, 1.5] as const;
 
-export function CvPreviewCard() {
+interface CvPreviewCardProps {
+  hasBackendApi?: boolean;
+}
+
+export function CvPreviewCard({ hasBackendApi = false }: CvPreviewCardProps) {
+  const staticCvUrl = withBase(STATIC_CV_PDF_PATH);
+  const downloadHref = hasBackendApi ? '/api/cv' : staticCvUrl;
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(720);
   const [expanded, setExpanded] = useState(true);
@@ -39,8 +45,15 @@ export function CvPreviewCard() {
   const [scale, setScale] = useState<number | 'fit'>('fit');
   const [tallView, setTallView] = useState(false);
   const [fullscreen, setFullscreen] = useState(false);
-  const [cvFileUrl, setCvFileUrl] = useState<string>('/api/cv?inline=1');
+  const [cvFileUrl, setCvFileUrl] = useState<string>(() =>
+    hasBackendApi ? '/api/cv?inline=1' : staticCvUrl
+  );
   const [pdfError, setPdfError] = useState(false);
+
+  useEffect(() => {
+    setCvFileUrl(hasBackendApi ? '/api/cv?inline=1' : staticCvUrl);
+    setPdfError(false);
+  }, [hasBackendApi, staticCvUrl]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -194,7 +207,7 @@ export function CvPreviewCard() {
 
           {/* Direct Download */}
           <a
-            href="/api/cv"
+            href={downloadHref}
             download={CONTACT_INFO.cvFileName}
             className="inline-flex min-h-[38px] items-center gap-1.5 rounded-full bg-[#252525] px-4 py-1.5 text-xs font-semibold text-white hover:bg-[#383838] whitespace-nowrap dark:bg-[#F5EBDD] dark:text-[#252525] dark:hover:bg-[#FFFDF9]"
           >
@@ -233,8 +246,8 @@ export function CvPreviewCard() {
                     setPdfError(false);
                   }}
                   onLoadError={() => {
-                    if (cvFileUrl !== STATIC_CV_URL) {
-                      setCvFileUrl(STATIC_CV_URL);
+                    if (cvFileUrl !== staticCvUrl) {
+                      setCvFileUrl(staticCvUrl);
                     } else {
                       setPdfError(true);
                     }
@@ -257,7 +270,7 @@ export function CvPreviewCard() {
             ) : (
               /* Secured iframe fallback */
               <iframe
-                src={`${STATIC_CV_URL}#view=FitH`}
+                src={`${staticCvUrl}#view=FitH`}
                 title="CV de Cédrine Pigeon-Schneider"
                 sandbox="allow-same-origin allow-scripts"
                 className="h-[540px] w-full rounded-xl border-0 bg-white"
@@ -320,7 +333,7 @@ export function CvPreviewCard() {
                 )}
 
                 <a
-                  href="/api/cv"
+                  href={downloadHref}
                   download={CONTACT_INFO.cvFileName}
                   className="inline-flex items-center gap-1.5 rounded-full bg-[#252525] px-4 py-2 text-xs font-semibold text-white whitespace-nowrap dark:bg-[#F5EBDD] dark:text-[#252525]"
                 >
@@ -344,8 +357,8 @@ export function CvPreviewCard() {
                   <Document
                     file={cvFileUrl}
                     onLoadError={() => {
-                      if (cvFileUrl !== STATIC_CV_URL) {
-                        setCvFileUrl(STATIC_CV_URL);
+                      if (cvFileUrl !== staticCvUrl) {
+                        setCvFileUrl(staticCvUrl);
                       } else {
                         setPdfError(true);
                       }
@@ -362,7 +375,7 @@ export function CvPreviewCard() {
                 </div>
               ) : (
                 <iframe
-                  src={`${STATIC_CV_URL}#view=FitH`}
+                  src={`${staticCvUrl}#view=FitH`}
                   title="CV complet de Cédrine Pigeon-Schneider"
                   sandbox="allow-same-origin allow-scripts"
                   className="h-full w-full rounded-xl border-0 bg-white"

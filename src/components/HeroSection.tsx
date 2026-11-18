@@ -18,11 +18,13 @@ import { MediaAsset, ProjectItem, SectionTheme } from '../types/portfolio';
 import { EditorialImageSlot } from './EditorialImageSlot';
 import { ImageLightbox } from './ImageLightbox';
 import { ScrollReveal } from './ScrollReveal';
+import { STATIC_CV_PDF_PATH, withBase } from '../utils/assetUrl';
 
 interface HeroSectionProps {
   portrait: MediaAsset | null;
   artisticPhoto: MediaAsset | null;
   featuredProjects: ProjectItem[];
+  hasBackendApi?: boolean;
   reducedMotion: boolean;
   darkMode?: boolean;
   onNavigate: (sectionId: string, theme: SectionTheme) => void;
@@ -70,11 +72,13 @@ export function HeroSection({
   portrait,
   artisticPhoto,
   featuredProjects,
+  hasBackendApi = false,
   reducedMotion,
   darkMode = false,
   onNavigate,
   onSelectProject,
 }: HeroSectionProps) {
+  const cvHref = hasBackendApi ? '/api/cv' : withBase(STATIC_CV_PDF_PATH);
   const sectionRef = useRef<HTMLElement>(null);
   const [heroLightbox, setHeroLightbox] = useState<{
     assets: MediaAsset[];
@@ -223,7 +227,7 @@ export function HeroSection({
               </motion.button>
 
               <motion.a
-                href="/api/cv"
+                href={cvHref}
                 download="CV_de_Cédrine_PIGEON-SCHNEIDER.pdf"
                 whileHover={reducedMotion ? undefined : { scale: 1.04, y: -2 }}
                 whileTap={reducedMotion ? undefined : { scale: 0.97 }}
@@ -601,7 +605,7 @@ export function HeroSection({
                       {firstVisual ? (
                         <>
                           <img
-                            src={firstVisual.url}
+                            src={withBase(firstVisual.url)}
                             alt={firstVisual.alt || project.title}
                             referrerPolicy="no-referrer"
                             loading="lazy"

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Camera, Maximize2, Palette, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
 import { MediaAsset } from '../types/portfolio';
+import { withBase } from '../utils/assetUrl';
 
 interface EditorialImageSlotProps {
   asset: MediaAsset | null | undefined;
@@ -93,7 +94,7 @@ export function EditorialImageSlot({
         {hasValidImage && asset ? (
           <>
             <img
-              src={asset.url}
+              src={withBase(asset.url)}
               alt={asset.alt || fallbackTitle}
               referrerPolicy="no-referrer"
               loading={priority ? 'eager' : 'lazy'}

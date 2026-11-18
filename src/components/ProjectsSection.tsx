@@ -5,6 +5,7 @@ import { MediaAsset, ProjectCategory, ProjectItem } from '../types/portfolio';
 import { EditorialImageSlot } from './EditorialImageSlot';
 import { ImageLightbox } from './ImageLightbox';
 import { ScrollReveal } from './ScrollReveal';
+import { withBase } from '../utils/assetUrl';
 
 interface ProjectsSectionProps {
   projects: ProjectItem[];
@@ -170,7 +171,7 @@ export function ProjectsSection({
                         {primaryVisual ? (
                           <>
                             <img
-                              src={primaryVisual.url}
+                              src={withBase(primaryVisual.url)}
                               alt={firstAlt(primaryVisual.alt, project.title)}
                               referrerPolicy="no-referrer"
                               loading="lazy"

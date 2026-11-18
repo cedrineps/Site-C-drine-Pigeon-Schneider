@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight, Maximize2, X, ZoomIn, ZoomOut } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { MediaAsset } from '../types/portfolio';
+import { withBase } from '../utils/assetUrl';
 
 interface ImageLightboxProps {
   assets: MediaAsset[];
@@ -141,7 +142,7 @@ export function ImageLightbox({
             >
               <div className="relative overflow-hidden rounded-2xl bg-[#F5EBDD]/40">
                 <img
-                  src={activeAsset.url}
+                  src={withBase(activeAsset.url)}
                   alt={activeAsset.alt || activeAsset.caption || 'Création originale'}
                   referrerPolicy="no-referrer"
                   draggable={false}

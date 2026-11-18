@@ -14,13 +14,20 @@ import { motion } from 'motion/react';
 import { APPRENTICESHIP_DETAILS, CONTACT_INFO } from '../data/initialPortfolio';
 import { CvPreviewCard } from './CvPreviewCard';
 import { ScrollReveal } from './ScrollReveal';
+import { STATIC_CV_PDF_PATH, withBase } from '../utils/assetUrl';
 
 interface ContactSectionProps {
+  hasBackendApi?: boolean;
   onOpenStudio: () => void;
   reducedMotion: boolean;
 }
 
-export function ContactSection({ onOpenStudio, reducedMotion }: ContactSectionProps) {
+export function ContactSection({
+  hasBackendApi = false,
+  onOpenStudio,
+  reducedMotion,
+}: ContactSectionProps) {
+  const cvHref = hasBackendApi ? '/api/cv' : withBase(STATIC_CV_PDF_PATH);
   const [copied, setCopied] = useState(false);
 
   const handleCopyEmail = async () => {
@@ -202,7 +209,7 @@ export function ContactSection({ onOpenStudio, reducedMotion }: ContactSectionPr
 
             <div className="mt-7 flex flex-col gap-3">
               <motion.a
-                href="/api/cv"
+                href={cvHref}
                 download={CONTACT_INFO.cvFileName}
                 whileHover={reducedMotion ? undefined : { y: -2, scale: 1.02 }}
                 whileTap={reducedMotion ? undefined : { scale: 0.98 }}
@@ -231,7 +238,7 @@ export function ContactSection({ onOpenStudio, reducedMotion }: ContactSectionPr
 
         {/* Interactive PDF CV Preview */}
         <ScrollReveal reducedMotion={reducedMotion} yOffset={26}>
-          <CvPreviewCard />
+          <CvPreviewCard hasBackendApi={hasBackendApi} />
         </ScrollReveal>
 
         {/* Clean Footer */}

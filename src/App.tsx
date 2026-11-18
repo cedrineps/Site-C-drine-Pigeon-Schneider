@@ -52,6 +52,7 @@ export default function App() {
   const [sweepTheme, setSweepTheme] = useState<SectionTheme | null>(null);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [studioOpen, setStudioOpen] = useState(false);
+  const [hasBackendApi, setHasBackendApi] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     if (typeof window === 'undefined') return false;
@@ -96,6 +97,7 @@ export default function App() {
           Array.isArray(data.projects) &&
           Array.isArray(data.moodboard)
         ) {
+          setHasBackendApi(true);
           setPortfolio(data);
         }
       })
@@ -199,6 +201,7 @@ export default function App() {
           portrait={portfolio.portrait}
           artisticPhoto={portfolio.artisticPhoto}
           featuredProjects={previewProjects}
+          hasBackendApi={hasBackendApi}
           reducedMotion={reducedMotion}
           darkMode={darkMode}
           onNavigate={handleNavigate}
@@ -256,7 +259,11 @@ export default function App() {
 
         <PersonalitySection reducedMotion={reducedMotion} />
 
-        <ContactSection onOpenStudio={() => setStudioOpen(true)} reducedMotion={reducedMotion} />
+        <ContactSection
+          hasBackendApi={hasBackendApi}
+          onOpenStudio={() => setStudioOpen(true)}
+          reducedMotion={reducedMotion}
+        />
       </main>
 
       <StudioModal

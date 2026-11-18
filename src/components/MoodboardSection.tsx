@@ -3,6 +3,7 @@ import { Maximize2, RotateCcw, Sparkles, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { MediaAsset, MoodboardItem } from '../types/portfolio';
 import { ImageLightbox } from './ImageLightbox';
+import { STATIC_MOODBOARD_PDF_PATH, withBase } from '../utils/assetUrl';
 
 interface MoodboardSectionProps {
   items: MoodboardItem[];
@@ -166,7 +167,7 @@ export function MoodboardSection({
 
           <div className="flex flex-wrap items-center gap-2.5">
             <motion.a
-              href="/api/moodboard-pdf"
+              href={withBase(STATIC_MOODBOARD_PDF_PATH)}
               download="Moodboard_Cedrine_PIGEON-SCHNEIDER.pdf"
               whileHover={reducedMotion ? undefined : { y: -2, scale: 1.03 }}
               whileTap={reducedMotion ? undefined : { scale: 0.97 }}
@@ -260,7 +261,7 @@ export function MoodboardSection({
                   className="relative mt-2.5 aspect-[4/3] overflow-hidden rounded-xl bg-[#FAF6F0] dark:bg-[#1E1B18]"
                 >
                   <img
-                    src={item.imageUrl}
+                    src={withBase(item.imageUrl)}
                     alt={item.imageAlt || item.title}
                     referrerPolicy="no-referrer"
                     draggable={false}
@@ -321,7 +322,7 @@ export function MoodboardSection({
               {item.type === 'image' && item.imageUrl && (
                 <div className="relative mt-2.5 aspect-[4/3] overflow-hidden rounded-xl bg-[#FAF6F0] dark:bg-[#1E1B18]">
                   <img
-                    src={item.imageUrl}
+                    src={withBase(item.imageUrl)}
                     alt={item.imageAlt || item.title}
                     referrerPolicy="no-referrer"
                     draggable={false}
@@ -390,7 +391,7 @@ export function MoodboardSection({
               {zoomedItem.type === 'image' && zoomedItem.imageUrl && (
                 <div className="relative mt-4 overflow-hidden rounded-2xl bg-white dark:bg-[#1E1B18]">
                   <img
-                    src={zoomedItem.imageUrl}
+                    src={withBase(zoomedItem.imageUrl)}
                     alt={zoomedItem.imageAlt || zoomedItem.title}
                     referrerPolicy="no-referrer"
                     draggable={false}
