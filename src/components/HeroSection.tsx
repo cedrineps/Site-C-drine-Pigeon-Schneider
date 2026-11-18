@@ -361,9 +361,9 @@ export function HeroSection({
               >
                 <EditorialImageSlot
                   asset={artisticPhoto}
-                  fallbackTitle="Regard artistique"
-                  fallbackHint="Photo maquillage créatif"
-                  variant="artistic"
+                  fallbackTitle="Portrait de Cédrine"
+                  fallbackHint="Portrait secondaire"
+                  variant="portrait"
                   defaultRotate={-4.5}
                   tapeColor="#CDB8F0"
                   aspectClass="aspect-square"

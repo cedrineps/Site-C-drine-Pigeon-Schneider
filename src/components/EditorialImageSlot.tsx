@@ -102,7 +102,7 @@ export function EditorialImageSlot({
               draggable={false}
               onError={() => setImgFailed(true)}
               className={`h-full w-full transform-gpu select-none transition-transform duration-300 ease-out group-hover:scale-[1.03] ${
-                fitContain ? 'object-contain p-1.5' : 'object-cover'
+                fitContain ? 'object-contain p-1.5' : 'object-cover object-top'
               }`}
             />
             {onClick && (

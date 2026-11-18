@@ -223,7 +223,7 @@ export function StudioModal({ open, onClose, onPublishedUpdate }: StudioModalPro
         alt:
           slot === 'portrait'
             ? 'Portrait naturel de Cédrine Pigeon-Schneider'
-            : 'Portrait artistique maquillage de Cédrine Pigeon-Schneider',
+            : 'Portrait secondaire de Cédrine Pigeon-Schneider',
         caption: slot === 'portrait' ? 'Cédrine' : 'Touche artistique',
         updatedAt: new Date().toISOString(),
       };
@@ -524,8 +524,8 @@ export function StudioModal({ open, onClose, onPublishedUpdate }: StudioModalPro
                         },
                         {
                           key: 'artisticPhoto' as const,
-                          title: 'Photo artistique maquillage',
-                          desc: 'Collage incliné à côté du portrait principal.',
+                          title: 'Second portrait (carte superposée)',
+                          desc: 'Portrait incliné à côté du portrait principal.',
                         },
                       ] as const
                     ).map((slot) => {
