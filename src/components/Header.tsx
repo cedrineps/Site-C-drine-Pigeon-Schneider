@@ -85,9 +85,9 @@ export function Header({
           whileHover={{ scale: 1.04, rotate: -1.5 }}
           whileTap={{ scale: 0.96 }}
           onClick={() => handleLinkClick('hero', 'cream')}
-          className="font-display text-xl font-bold tracking-tight text-[#252525] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C94F7C] rounded-full px-1 cursor-pointer dark:text-[#F5EBDD] dark:focus-visible:ring-[#F08AA8]"
+          className="font-display text-base sm:text-xl font-bold tracking-tight text-[#252525] whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C94F7C] rounded-full px-1 cursor-pointer dark:text-[#F5EBDD] dark:focus-visible:ring-[#F08AA8]"
         >
-          PIGEON.
+          PIGEON-SCHNEIDER
         </motion.button>
 
         {/* Zone 2: 5 single-line nav links with elastic sliding underline */}

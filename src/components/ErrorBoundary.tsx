@@ -26,7 +26,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     if (this.state.hasError) {
       return (
         <div className="flex min-h-screen flex-col items-center justify-center bg-[#F5EBDD] px-6 text-center text-[#252525]">
-          <p className="font-display text-3xl font-bold">PIGEON.</p>
+          <p className="font-display text-3xl font-bold">PIGEON-SCHNEIDER</p>
           <p className="mt-3 max-w-md text-sm leading-relaxed text-[#252525]/80">
             Une erreur d&rsquo;affichage temporaire est survenue lors du chargement de la page.
           </p>

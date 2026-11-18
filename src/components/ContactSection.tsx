@@ -246,7 +246,7 @@ export function ContactSection({
           <div className="flex flex-col items-center gap-1.5 text-center sm:items-start sm:text-left">
             <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-start">
               <span className="font-display text-base font-bold text-[#252525] dark:text-[#F5EBDD]">
-                PIGEON.
+                PIGEON-SCHNEIDER
               </span>
               <span aria-hidden="true">·</span>
               <span>Cédrine Pigeon-Schneider</span>

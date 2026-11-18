@@ -464,7 +464,7 @@ async function startServer() {
   }
 
   httpServer.listen(PORT, '0.0.0.0', () => {
-    console.log(`PIGEON. server listening on http://0.0.0.0:${PORT}`);
+    console.log(`PIGEON-SCHNEIDER server listening on http://0.0.0.0:${PORT}`);
   });
 }
 
