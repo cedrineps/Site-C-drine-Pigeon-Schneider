@@ -11,7 +11,6 @@ interface NavLinkItem {
 
 const NAV_LINKS: NavLinkItem[] = [
   { id: 'about', label: 'À propos', theme: 'coral' },
-  { id: 'inspiration', label: 'Univers', theme: 'lilac' },
   { id: 'projects', label: 'Projets', theme: 'yellow' },
   { id: 'personality', label: 'Profil', theme: 'sage' },
   { id: 'contact', label: 'Contact', theme: 'pink' },

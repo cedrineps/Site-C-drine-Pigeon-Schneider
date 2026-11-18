@@ -11,7 +11,6 @@ import { CustomCursor } from './components/CustomCursor';
 import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
 import { KineticMarquee } from './components/KineticMarquee';
-import { MoodboardSection } from './components/MoodboardSection';
 import { PersonalitySection } from './components/PersonalitySection';
 import { ProjectsSection } from './components/ProjectsSection';
 import { StudioModal } from './components/StudioModal';
@@ -21,7 +20,6 @@ import { PortfolioData, ProjectItem, SectionTheme } from './types/portfolio';
 const SECTION_META: Array<{ id: string; theme: SectionTheme }> = [
   { id: 'hero', theme: 'cream' },
   { id: 'about', theme: 'coral' },
-  { id: 'inspiration', theme: 'lilac' },
   { id: 'projects', theme: 'yellow' },
   { id: 'personality', theme: 'sage' },
   { id: 'contact', theme: 'pink' },
@@ -224,12 +222,6 @@ export default function App() {
 
         <AboutSection
           portrait={portfolio.portrait}
-          reducedMotion={reducedMotion}
-          darkMode={darkMode}
-        />
-
-        <MoodboardSection
-          items={portfolio.moodboard}
           reducedMotion={reducedMotion}
           darkMode={darkMode}
         />

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { ArrowUpRight, Maximize2, Sparkles, X } from 'lucide-react';
+import { ArrowUpRight, Download, Maximize2, Sparkles, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { MediaAsset, ProjectCategory, ProjectItem } from '../types/portfolio';
 import { EditorialImageSlot } from './EditorialImageSlot';
 import { ImageLightbox } from './ImageLightbox';
 import { ScrollReveal } from './ScrollReveal';
-import { withBase } from '../utils/assetUrl';
+import { STATIC_MOODBOARD_PDF_PATH, withBase } from '../utils/assetUrl';
 
 interface ProjectsSectionProps {
   projects: ProjectItem[];
@@ -63,7 +63,7 @@ export function ProjectsSection({
           <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
             <div className="max-w-2xl">
               <p className="font-hand text-2xl font-bold text-[#8D690B] dark:text-[#F5D87A] sm:text-3xl">
-                03. Projets stratégiques &amp; créatifs
+                02. Projets stratégiques &amp; créatifs
               </p>
               <h2 className="font-display headline-balance mt-2 text-4xl font-bold tracking-tight text-[#252525] dark:text-[#F5EBDD] sm:text-5xl">
                 Thinking outside the box
@@ -73,6 +73,17 @@ export function ProjectsSection({
                 poser un cadre clair et imaginer des supports visuels justes.
               </p>
             </div>
+
+            <motion.a
+              href={withBase(STATIC_MOODBOARD_PDF_PATH)}
+              download="Moodboard_Cedrine_PIGEON-SCHNEIDER.pdf"
+              whileHover={reducedMotion ? undefined : { y: -2, scale: 1.03 }}
+              whileTap={reducedMotion ? undefined : { scale: 0.97 }}
+              className="inline-flex self-start lg:self-auto items-center gap-2 rounded-full border border-[#252525]/15 bg-white/85 px-4 py-2.5 text-xs font-semibold text-[#252525] shadow-xs transition-colors hover:bg-white whitespace-nowrap shrink-0 dark:border-[#F5EBDD]/20 dark:bg-[#2B2722]/90 dark:text-[#F5EBDD] dark:hover:bg-[#36312B]"
+            >
+              <Download className="h-3.5 w-3.5 text-[#8D690B] dark:text-[#F5D87A]" />
+              <span>Télécharger le moodboard (PDF)</span>
+            </motion.a>
           </div>
         </ScrollReveal>
 
@@ -324,18 +335,16 @@ export function ProjectsSection({
                 ))}
               </div>
 
-              <div className="mt-8">
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <p className="font-display text-lg font-bold text-[#252525] dark:text-[#F5EBDD]">
-                    {selectedProject.visuals.length > 1 ? 'Les visuels' : 'Le visuel'}
-                  </p>
-                  {selectedProject.visuals.length > 0 && (
+              {selectedProject.visuals.length > 0 && (
+                <div className="mt-8">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <p className="font-display text-lg font-bold text-[#252525] dark:text-[#F5EBDD]">
+                      {selectedProject.visuals.length > 1 ? 'Les visuels' : 'Le visuel'}
+                    </p>
                     <span className="font-hand text-lg text-[#C94F7C] dark:text-[#F08AA8]">
                       Cliquez sur une image pour l&rsquo;agrandir en entier
                     </span>
-                  )}
-                </div>
-                {selectedProject.visuals.length > 0 ? (
+                  </div>
                   <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2">
                     {selectedProject.visuals.map((vis, i) => (
                       <EditorialImageSlot
@@ -358,20 +367,8 @@ export function ProjectsSection({
                       />
                     ))}
                   </div>
-                ) : (
-                  <div className="mt-4">
-                    <EditorialImageSlot
-                      asset={null}
-                      fallbackTitle={selectedProject.title}
-                      fallbackHint="Ajoutez vos visuels (affiches, carrousels, flyers, présentations) depuis votre espace privé"
-                      variant="project"
-                      defaultRotate={0}
-                      tapeColor="#F1D16F"
-                      aspectClass="aspect-[16/9]"
-                    />
-                  </div>
-                )}
-              </div>
+                </div>
+              )}
             </motion.div>
           </motion.div>
         )}

@@ -15,7 +15,6 @@ import {
 } from 'lucide-react';
 import {
   MediaAsset,
-  MoodboardItem,
   PortfolioData,
   ProjectCategory,
   ProjectItem,
@@ -76,7 +75,7 @@ export function StudioModal({ open, onClose, onPublishedUpdate }: StudioModalPro
   const [authError, setAuthError] = useState('');
 
   const [studioState, setStudioState] = useState<StudioState | null>(null);
-  const [activeTab, setActiveTab] = useState<'portraits' | 'projects' | 'moodboard' | 'cv'>('portraits');
+  const [activeTab, setActiveTab] = useState<'portraits' | 'projects' | 'cv'>('portraits');
   const [busyMessage, setBusyMessage] = useState('');
   const [feedback, setFeedback] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
 
@@ -88,9 +87,6 @@ export function StudioModal({ open, onClose, onPublishedUpdate }: StudioModalPro
   const [newProjectChallenge, setNewProjectChallenge] = useState('');
   const [newProjectIdea, setNewProjectIdea] = useState('');
 
-  const [moodTitle, setMoodTitle] = useState('');
-  const [moodCaption, setMoodCaption] = useState('');
-  const [moodTone, setMoodTone] = useState<MoodboardItem['bgTone']>('lilac');
   const [newPasscode, setNewPasscode] = useState('');
 
   const getHeaders = () => {
@@ -311,35 +307,6 @@ export function StudioModal({ open, onClose, onPublishedUpdate }: StudioModalPro
     await saveDraft(nextDraft, 'Nouveau projet créé ! Vous pouvez maintenant y importer vos visuels.');
   };
 
-  const handleMoodboardUpload = async (file: File) => {
-    if (!studioState) return;
-    try {
-      const url = await uploadImage(file);
-      const item: MoodboardItem = {
-        id: `mood-img-${Date.now()}`,
-        type: 'image',
-        title: moodTitle.trim() || 'Inspiration visuelle',
-        caption: moodCaption.trim() || file.name.replace(/\.[^.]+$/, ''),
-        imageUrl: url,
-        imageAlt: moodTitle.trim() || 'Inspiration visuelle de Cédrine',
-        bgTone: moodTone,
-        x: 12 + (studioState.draft.moodboard.length % 4) * 14,
-        y: 14 + (studioState.draft.moodboard.length % 3) * 18,
-        rotate: studioState.draft.moodboard.length % 2 === 0 ? -2 : 2,
-        zIndex: studioState.draft.moodboard.length + 10,
-      };
-      setMoodTitle('');
-      setMoodCaption('');
-      await saveDraft(
-        { ...studioState.draft, moodboard: [...studioState.draft.moodboard, item] },
-        'Image ajoutée au moodboard (brouillon).'
-      );
-    } catch (err) {
-      setBusyMessage('');
-      setFeedback({ type: 'err', text: err instanceof Error ? err.message : 'Erreur upload.' });
-    }
-  };
-
   const handleCvUpload = async (file: File) => {
     if (!studioState) return;
     setBusyMessage('Envoi du CV PDF...');
@@ -528,7 +495,6 @@ export function StudioModal({ open, onClose, onPublishedUpdate }: StudioModalPro
                   {[
                     { id: 'portraits', label: 'Portraits Hero & À propos' },
                     { id: 'projects', label: 'Projets & Créations' },
-                    { id: 'moodboard', label: 'Moodboard' },
                     { id: 'cv', label: 'CV PDF & Code d’accès' },
                   ].map((tab) => (
                     <button
@@ -845,103 +811,7 @@ export function StudioModal({ open, onClose, onPublishedUpdate }: StudioModalPro
                   </div>
                 )}
 
-                {/* Tab 3: Moodboard */}
-                {activeTab === 'moodboard' && (
-                  <div className="mt-6 space-y-6">
-                    <div className="rounded-[24px] border border-[#252525]/10 bg-white p-5">
-                      <h4 className="font-display text-lg font-bold text-[#252525]">
-                        Ajouter une image au moodboard interactif
-                      </h4>
-                      <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                        <input
-                          type="text"
-                          value={moodTitle}
-                          onChange={(e) => setMoodTitle(e.target.value)}
-                          placeholder="Titre de la carte"
-                          className="rounded-xl border border-[#252525]/15 px-3.5 py-2 text-sm"
-                        />
-                        <input
-                          type="text"
-                          value={moodCaption}
-                          onChange={(e) => setMoodCaption(e.target.value)}
-                          placeholder="Légende manuscrite"
-                          className="rounded-xl border border-[#252525]/15 px-3.5 py-2 text-sm"
-                        />
-                        <select
-                          value={moodTone}
-                          onChange={(e) => setMoodTone(e.target.value as MoodboardItem['bgTone'])}
-                          className="rounded-xl border border-[#252525]/15 px-3.5 py-2 text-sm"
-                        >
-                          <option value="lilac">Fond lilas</option>
-                          <option value="coral">Fond corail</option>
-                          <option value="yellow">Fond jaune</option>
-                          <option value="sage">Fond sauge</option>
-                          <option value="pink">Fond rose</option>
-                          <option value="cream">Fond crème</option>
-                        </select>
-                      </div>
-                      <label className="mt-4 inline-flex cursor-pointer items-center gap-2 rounded-full bg-[#252525] px-5 py-2.5 text-xs font-semibold text-white">
-                        <ImagePlus className="h-4 w-4" />
-                        <span>Importer une image sur le moodboard</span>
-                        <input
-                          type="file"
-                          accept="image/*"
-                          className="hidden"
-                          onChange={(e) => {
-                            const f = e.target.files?.[0];
-                            if (f) handleMoodboardUpload(f);
-                            e.target.value = '';
-                          }}
-                        />
-                      </label>
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      {studioState.draft.moodboard.map((item) => (
-                        <div
-                          key={item.id}
-                          className="flex items-center justify-between gap-3 rounded-2xl border border-[#252525]/10 bg-white p-4"
-                        >
-                          <div className="flex items-center gap-3 min-w-0">
-                            {item.imageUrl && (
-                              <img
-                                src={item.imageUrl}
-                                alt={item.title}
-                                className="h-12 w-12 shrink-0 rounded-xl object-cover"
-                              />
-                            )}
-                            <div className="min-w-0">
-                              <p className="truncate text-sm font-semibold text-[#252525]">
-                                {item.title}
-                              </p>
-                              <p className="truncate text-xs text-[#252525]/65">{item.caption}</p>
-                            </div>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              saveDraft(
-                                {
-                                  ...studioState.draft,
-                                  moodboard: studioState.draft.moodboard.filter(
-                                    (m) => m.id !== item.id
-                                  ),
-                                },
-                                'Élément retiré du moodboard.'
-                              )
-                            }
-                            className="shrink-0 rounded-full p-2 text-[#C94F7C] hover:bg-[#E7A49B]/15 cursor-pointer"
-                            aria-label={`Supprimer ${item.title}`}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Tab 4: CV & Security */}
+                {/* Tab 3: CV & Security */}
                 {activeTab === 'cv' && (
                   <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
                     <div className="rounded-[24px] border border-[#252525]/10 bg-white p-5">

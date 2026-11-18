@@ -33,7 +33,7 @@ const RECRUITER_PILLARS = [
     badge: 'Stratégie marketing pure',
     title: 'Analyser l’offre, trouver la cible, définir comment vendre',
     lead: 'Comprendre le produit ou service avant même de créer.',
-    body: "Ce que je vise, c’est la stratégie marketing pure : décrypter ce que l’on vend, chercher à qui le vendre, trouver comment convaincre et bâtir le plan d’action. Mes travaux sur les innovations immersives, mon projet L’Épifemme et mes analyses marketing illustrent cette démarche complète.",
+    body: "Ce que je vise, c’est la stratégie marketing pure : décrypter ce que l’on vend, chercher à qui le vendre, trouver comment convaincre et bâtir le plan d’action. Mes travaux sur les innovations immersives, mon projet scolaire L’Épifemme (exercice noté) et mes analyses marketing illustrent cette démarche complète.",
     tapeColor: '#CDB8F0',
     surface: 'rgba(205, 184, 240, 0.28)',
     darkSurface: 'rgba(205, 184, 240, 0.14)',
@@ -118,8 +118,8 @@ export function AboutSection({ portrait, reducedMotion, darkMode = false }: Abou
                 et construire la meilleure façon de le proposer.
               </p>
               <p>
-                Mes travaux sur les <strong>innovations immersives</strong>, mon projet{' '}
-                <strong>L&rsquo;Épifemme</strong>, mes analyses marketing et mes créations
+                Mes travaux sur les <strong>innovations immersives</strong>, mon projet scolaire{' '}
+                <strong>L&rsquo;Épifemme</strong> (exercice noté), mes analyses marketing et mes créations
                 visuelles traduisent cette vision : ne pas s&rsquo;arrêter au constat, mais tracer
                 la <strong>ligne directrice des visuels et des vidéos publicitaires</strong> pour
                 que mots, images, couleurs, message et expérience composent un univers irrésistible.

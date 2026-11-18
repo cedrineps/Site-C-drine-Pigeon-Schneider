@@ -51,7 +51,7 @@ export function ContactSection({
           className="max-w-2xl"
         >
           <p className="font-hand text-2xl font-bold text-[#C94F7C] dark:text-[#F08AA8] sm:text-3xl">
-            05. Alternance &amp; prise de contact
+            04. Alternance &amp; prise de contact
           </p>
           <h2 className="font-display headline-balance mt-2 text-4xl font-bold tracking-tight text-[#252525] dark:text-[#F5EBDD] sm:text-5xl">
             Let&rsquo;s make it happen!

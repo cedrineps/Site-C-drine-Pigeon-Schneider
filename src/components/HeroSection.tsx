@@ -39,7 +39,7 @@ const CARD_ICONS: Record<string, typeof Sparkles> = {
 };
 
 const CARD_TARGETS: Record<string, { id: string; theme: SectionTheme }> = {
-  creative: { id: 'inspiration', theme: 'lilac' },
+  creative: { id: 'projects', theme: 'yellow' },
   stratege: { id: 'projects', theme: 'yellow' },
   organisee: { id: 'about', theme: 'coral' },
   relationnelle: { id: 'contact', theme: 'pink' },

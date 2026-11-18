@@ -57,7 +57,7 @@ export function PersonalitySection({ reducedMotion }: PersonalitySectionProps) {
           className="max-w-2xl"
         >
           <p className="font-hand text-2xl font-bold text-[#4F6638] dark:text-[#C5D9AA] sm:text-3xl">
-            04. Ce qui m&rsquo;anime au quotidien
+            03. Ce qui m&rsquo;anime au quotidien
           </p>
           <h2 className="font-display headline-balance mt-2 text-4xl font-bold tracking-tight text-[#252525] dark:text-[#F5EBDD] sm:text-5xl">
             A little bit of everything
