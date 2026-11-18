@@ -29,11 +29,13 @@ jobs:
           node-version: 22
 
       - name: Installer les dépendances
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Configurer GitHub Pages
         id: pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Construire le site pour GitHub Pages
         run: |
