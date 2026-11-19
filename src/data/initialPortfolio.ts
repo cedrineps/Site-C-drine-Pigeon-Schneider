@@ -282,13 +282,6 @@ export const INITIAL_PROJECTS: ProjectItem[] = [
         caption: 'Les 12 permissions (Word)',
         updatedAt: '2026-11-16T00:00:00.000Z',
       },
-      {
-        id: 'vis-bien-etre-planete',
-        url: '/assets/extracted/mood_334.jpg',
-        alt: 'Visuel cosmique planète rose pour le thème bien-être',
-        caption: 'Évasion & douceur cosmique',
-        updatedAt: '2026-11-16T00:00:00.000Z',
-      },
     ],
   },
   {
