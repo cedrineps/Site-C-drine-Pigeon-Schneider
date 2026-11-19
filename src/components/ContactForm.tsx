@@ -1,5 +1,5 @@
 import { FormEvent, useState } from 'react';
-import { AlertCircle, CheckCircle2, Mail, Send } from 'lucide-react';
+import { AlertCircle, Check, CheckCircle2, Copy, Mail, Send } from 'lucide-react';
 import { motion } from 'motion/react';
 import { CONTACT_INFO } from '../data/initialPortfolio';
 
@@ -27,12 +27,15 @@ const INITIAL_FORM: FormState = {
   honey: '',
 };
 
+const WEB3FORMS_KEY = (import.meta.env.VITE_WEB3FORMS_ACCESS_KEY || '').trim();
+
 export function ContactForm({ reducedMotion }: ContactFormProps) {
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
   const [submitting, setSubmitting] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorDetail, setErrorDetail] = useState<string | null>(null);
+  const [copiedFallback, setCopiedFallback] = useState(false);
 
   const updateField = (key: keyof FormState, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -40,22 +43,37 @@ export function ContactForm({ reducedMotion }: ContactFormProps) {
     if (submitStatus === 'error') setSubmitStatus('idle');
   };
 
-  const buildMailtoHref = () => {
-    const fullName = `${form.firstName.trim()} ${form.lastName.trim()}`.trim() || 'Contact portfolio';
-    const companyPart = form.company.trim() ? ` (${form.company.trim()})` : '';
-    const subject = encodeURIComponent(`Contact portfolio — ${fullName}${companyPart}`);
-    const bodyLines = [
-      `Prénom : ${form.firstName.trim()}`,
+  const formatPlainMessage = () => {
+    return [
       `Nom : ${form.lastName.trim()}`,
+      `Prénom : ${form.firstName.trim()}`,
       `Entreprise : ${form.company.trim() || 'Non précisée'}`,
       `E-mail : ${form.email.trim() || 'Non renseigné'}`,
       `Téléphone : ${form.phone.trim() || 'Non renseigné'}`,
       '',
       'Message :',
       form.message.trim(),
-    ];
-    const body = encodeURIComponent(bodyLines.join('\n'));
+    ].join('\n');
+  };
+
+  const buildMailtoHref = () => {
+    const fullName = `${form.firstName.trim()} ${form.lastName.trim()}`.trim() || 'Contact portfolio';
+    const companyPart = form.company.trim() ? ` (${form.company.trim()})` : '';
+    const subject = encodeURIComponent(`Contact portfolio — ${fullName}${companyPart}`);
+    const body = encodeURIComponent(formatPlainMessage());
     return `mailto:${CONTACT_INFO.email}?subject=${subject}&body=${body}`;
+  };
+
+  const handleCopyMessage = async () => {
+    try {
+      await navigator.clipboard.writeText(
+        `Destinataire : ${CONTACT_INFO.email}\n\n${formatPlainMessage()}`
+      );
+      setCopiedFallback(true);
+      setTimeout(() => setCopiedFallback(false), 2400);
+    } catch {
+      // Ignore clipboard permission failure
+    }
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -79,7 +97,9 @@ export function ContactForm({ reducedMotion }: ContactFormProps) {
       return;
     }
     if (!email && !phone) {
-      setValidationError('Veuillez renseigner un numéro de téléphone ou une adresse e-mail pour vous recontacter.');
+      setValidationError(
+        'Veuillez renseigner un numéro de téléphone ou une adresse e-mail pour vous recontacter.'
+      );
       return;
     }
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -95,21 +115,48 @@ export function ContactForm({ reducedMotion }: ContactFormProps) {
     setValidationError(null);
     setErrorDetail(null);
 
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => controller.abort(), 12000);
+
     try {
+      if (WEB3FORMS_KEY) {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          signal: controller.signal,
+          body: JSON.stringify({
+            access_key: WEB3FORMS_KEY,
+            subject: `Nouveau message portfolio — ${firstName} ${lastName}${company ? ` (${company})` : ''}`,
+            from_name: `${firstName} ${lastName}`,
+            name: `${firstName} ${lastName}`,
+            entreprise: company || 'Non précisée',
+            email: email || 'non-renseigne@contact.local',
+            telephone: phone || 'Non renseigné',
+            message,
+          }),
+        });
+        const data = (await res.json().catch(() => null)) as { success?: boolean } | null;
+        if (!res.ok || !data?.success) {
+          throw new Error('UNAVAILABLE');
+        }
+        setSubmitStatus('success');
+        return;
+      }
+
+      // Clean ASCII payload compatible with FormSubmit AJAX (no accented keys, _template, _replyto, or _captcha overrides)
       const payload: Record<string, string> = {
-        Prénom: firstName,
-        Nom: lastName,
-        Entreprise: company || 'Non précisée',
-        'E-mail': email || 'Non renseigné',
-        Téléphone: phone || 'Non renseigné',
-        Message: message,
-        _subject: `Nouveau message portfolio — ${firstName} ${lastName}${company ? ` (${company})` : ''}`,
-        _template: 'table',
-        _captcha: 'false',
+        name: `${firstName} ${lastName}`,
+        company: company || 'Non precisee',
+        phone: phone || 'Non renseigne',
+        message,
+        _subject: `Nouveau message portfolio - ${firstName} ${lastName}${company ? ` (${company})` : ''}`,
       };
 
       if (email) {
-        payload._replyto = email;
+        payload.email = email;
       }
 
       const res = await fetch(`https://formsubmit.co/ajax/${CONTACT_INFO.email}`, {
@@ -118,6 +165,7 @@ export function ContactForm({ reducedMotion }: ContactFormProps) {
           'Content-Type': 'application/json',
           Accept: 'application/json',
         },
+        signal: controller.signal,
         body: JSON.stringify(payload),
       });
 
@@ -125,22 +173,31 @@ export function ContactForm({ reducedMotion }: ContactFormProps) {
         | { success?: boolean | string; message?: string }
         | null;
 
+      const rawMsg = (data?.message || '').toLowerCase();
+      if (rawMsg.includes('activation')) {
+        throw new Error('NEEDS_ACTIVATION');
+      }
+
       const ok = res.ok && (data?.success === true || data?.success === 'true');
       if (!ok) {
-        throw new Error(
-          data?.message || "L'envoi automatique n'a pas pu aboutir pour le moment."
-        );
+        throw new Error('UNAVAILABLE');
       }
 
       setSubmitStatus('success');
     } catch (err) {
       setSubmitStatus('error');
-      setErrorDetail(
-        err instanceof Error
-          ? err.message
-          : "Impossible d'envoyer le message automatiquement."
-      );
+      const code = err instanceof Error ? err.message : '';
+      if (code === 'NEEDS_ACTIVATION') {
+        setErrorDetail(
+          `Ce formulaire attend sa première activation : vérifiez la boîte mail (ou les spams) de ${CONTACT_INFO.email} pour confirmer le lien d’activation, ou utilisez l’un des boutons ci-contre.`
+        );
+      } else {
+        setErrorDetail(
+          "Le serveur d'envoi automatique externe est momentanément indisponible. Vous pouvez envoyer votre message en un clic via votre messagerie ou le copier :"
+        );
+      }
     } finally {
+      window.clearTimeout(timeoutId);
       setSubmitting(false);
     }
   };
@@ -350,22 +407,38 @@ export function ContactForm({ reducedMotion }: ContactFormProps) {
           {submitStatus === 'error' && (
             <div
               role="alert"
-              className="flex flex-col gap-3 rounded-2xl border border-[#C94F7C]/30 bg-[#F6DCD8]/60 p-4 text-xs text-[#8C284C] dark:border-[#F08AA8]/30 dark:bg-[#3F242E]/75 dark:text-[#F5B7C8] sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col gap-3 rounded-2xl border border-[#C94F7C]/30 bg-[#F6DCD8]/60 p-4 text-xs text-[#8C284C] dark:border-[#F08AA8]/30 dark:bg-[#3F242E]/75 dark:text-[#F5B7C8]"
             >
               <div className="flex items-start gap-2.5">
                 <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
-                <span>
-                  {errorDetail || "L'envoi direct a été bloqué par votre navigateur ou réseau."}{' '}
-                  Vous pouvez envoyer votre message en un clic via votre messagerie :
-                </span>
+                <span>{errorDetail}</span>
               </div>
-              <a
-                href={buildMailtoHref()}
-                className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full bg-[#252525] px-4 py-2 text-xs font-semibold text-white hover:bg-[#383838] dark:bg-[#F5EBDD] dark:text-[#252525]"
-              >
-                <Mail className="h-3.5 w-3.5" />
-                <span>Envoyer par e-mail</span>
-              </a>
+              <div className="flex flex-wrap items-center gap-2.5 pl-6">
+                <a
+                  href={buildMailtoHref()}
+                  className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full bg-[#252525] px-4 py-2 text-xs font-semibold text-white hover:bg-[#383838] dark:bg-[#F5EBDD] dark:text-[#252525]"
+                >
+                  <Mail className="h-3.5 w-3.5" />
+                  <span>Envoyer via ma messagerie</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={handleCopyMessage}
+                  className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full border border-[#252525]/20 bg-white px-4 py-2 text-xs font-semibold text-[#252525] hover:bg-[#F5EBDD] cursor-pointer dark:border-[#F5EBDD]/20 dark:bg-[#1E1A1C] dark:text-[#F5EBDD]"
+                >
+                  {copiedFallback ? (
+                    <>
+                      <Check className="h-3.5 w-3.5 text-[#4F6638] dark:text-[#C5D9AA]" />
+                      <span>Message copié</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="h-3.5 w-3.5" />
+                      <span>Copier le message</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
           )}
 
