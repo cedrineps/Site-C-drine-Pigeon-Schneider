@@ -71,6 +71,15 @@ export default function App() {
   }, [darkMode]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const currentUrl = `${window.location.origin}${window.location.pathname}`;
+    const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (canonical) canonical.href = currentUrl;
+    const ogUrl = document.querySelector<HTMLMetaElement>('meta[property="og:url"]');
+    if (ogUrl) ogUrl.content = currentUrl;
+  }, []);
+
+  useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReducedMotion(mq.matches);
     const onChange = (e: MediaQueryListEvent) => setReducedMotion(e.matches);

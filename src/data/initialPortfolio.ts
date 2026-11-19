@@ -165,126 +165,6 @@ export const TIMELINE_ITEMS = [
 
 export const INITIAL_PROJECTS: ProjectItem[] = [
   {
-    id: 'halloween-parcs',
-    title: 'Parcs d’attractions Halloween — Du Labyrinthe au parc enfant',
-    category: 'Créations visuelles',
-    context: 'Moodboard & maquettes Figma / Canva',
-    role: 'Direction artistique, conception d’affiche, logo et maquettes de site web',
-    challenge:
-      'Décliner un même thème saisonnier (Halloween) pour deux publics distincts : sensations fortes pour adultes vs univers ludique et rassurant pour enfants.',
-    idea:
-      'D’un côté, une affiche texturée sang et parchemin pour « Le Labyrinthe » (#9F1E1E) ; de l’autre, un site coloré pour « La vague enchantée » mêlant violet, orange et vert (#5E2BB7, #ED8014, #0DD173) autour de mascottes et du slogan « Une photo ou un sort ? ».',
-    deliverables: ['Maquettes web Figma', 'Affiche Le Labyrinthe', 'Logo La vague enchantée', 'Palettes dédiées'],
-    accentColor: 'lilac',
-    featured: true,
-    visuals: [
-      {
-        id: 'vis-halloween-web',
-        url: '/assets/extracted/mood_17.png',
-        alt: 'Maquettes de site web Halloween pour parc d’attractions enfant (Figma et Canva)',
-        caption: 'Site Halloween — Figma & Canva',
-        updatedAt: '2026-11-16T00:00:00.000Z',
-      },
-      {
-        id: 'vis-halloween-labyrinthe',
-        url: '/assets/extracted/mood_11.png',
-        alt: 'Affiche Le Labyrinthe Halloween pour public adulte',
-        caption: 'Le Labyrinthe — Public adulte',
-        updatedAt: '2026-11-16T00:00:00.000Z',
-      },
-      {
-        id: 'vis-halloween-logo',
-        url: '/assets/extracted/mood_18.png',
-        alt: 'Logo La vague enchantée',
-        caption: 'Logo La vague enchantée',
-        updatedAt: '2026-11-16T00:00:00.000Z',
-      },
-    ],
-  },
-  {
-    id: 'fete-du-raisin',
-    title: 'Thème « Fête du raisin » — Affiches Canva & Figma',
-    category: 'Créations visuelles',
-    context: 'Inspiration « Pruneau Show » à Agen',
-    role: 'Conception de piste créative, déclinaisons d’affiches et recherche chromatique',
-    challenge:
-      'Valoriser une fête de village conviviale autour d’un produit local et d’une programmation musicale de plus de 80 artistes.',
-    idea:
-      'Explorer deux écritures complémentaires : une affiche champêtre réalisée sur Canva et une composition graphique géométrique réalisée sur Figma autour des teintes Studio (#7641BA), Cruise (#BFEED7) et Golden Sand (#EED171).',
-    deliverables: ['Affiche Canva', 'Affiche Figma', 'Planche d’inspiration & palette'],
-    accentColor: 'coral',
-    featured: true,
-    visuals: [
-      {
-        id: 'vis-fete-raisin',
-        url: '/assets/extracted/mood_3.png',
-        alt: 'Planche Fête du raisin comparant les créations Canva et Figma avec palette de couleurs',
-        caption: 'Canva & Figma — Fête du raisin',
-        updatedAt: '2026-11-16T00:00:00.000Z',
-      },
-    ],
-  },
-  {
-    id: 'noel-jouets-gala',
-    title: 'Noël ! Grand Gala & Magasin « Les Jouets en Bois »',
-    category: 'Créations visuelles',
-    context: 'Campagne fêtes de fin d’année (affiche, flyer & site)',
-    role: 'Création d’affiches, identité visuelle du chalet et illustration chaleureuse',
-    challenge:
-      'Transmettre la chaleur d’un foyer et l’esprit artisanal de Noël tout en gardant des informations événementielles et horaires parfaitement lisibles.',
-    idea:
-      'Associer une affiche « Grand Gala de Noël » à l’effet peinture à la main (vert sapin, or et rouge carmin) et un support chaleureux pour « Les Jouets en Bois » centré sur une scène de cheminée et des tons doux (#E7AD83, #C9901B, #CF0303).',
-    deliverables: ['Affiche Grand Gala', 'Flyer magasin de jouets', 'Logo & illustration'],
-    accentColor: 'pink',
-    featured: true,
-    visuals: [
-      {
-        id: 'vis-noel-magasin',
-        url: '/assets/extracted/mood_96.png',
-        alt: 'Affiche Noël approche pour le magasin Les Jouets en Bois',
-        caption: 'Noël approche — Les Jouets en Bois',
-        updatedAt: '2026-11-16T00:00:00.000Z',
-      },
-      {
-        id: 'vis-noel-gala',
-        url: '/assets/extracted/mood_97.jpg',
-        alt: 'Affiche Grand Gala de Noël façon peinture à la main',
-        caption: 'Grand Gala de Noël — Effet peinture',
-        updatedAt: '2026-11-16T00:00:00.000Z',
-      },
-      {
-        id: 'vis-noel-foyer',
-        url: '/assets/extracted/mood_100.jpg',
-        alt: 'Illustration chaleureuse de cheminée et salon de Noël',
-        caption: 'Illustration chaleur du foyer',
-        updatedAt: '2026-11-16T00:00:00.000Z',
-      },
-    ],
-  },
-  {
-    id: 'bien-etre-permissions',
-    title: 'Thème Bien-être — Affiche « Les 12 permissions »',
-    category: 'Créations visuelles',
-    context: 'Création éditoriale et direction bien-être (Word & Pixabay)',
-    role: 'Mise en page, hiérarchisation typographique et recherche atmosphérique',
-    challenge:
-      'Rendre 12 principes de bien-être et d’affirmation de soi agréables à lire, apaisants et visuellement mémorables.',
-    idea:
-      'Composer une nuit étoilée bleu profond (#0F2779 vers #4234B9) portée par des constellations fines et un univers cosmique doux autour de mots-clés : Douceur, Évasion, Tranquillité, Amour de soi.',
-    deliverables: ['Affiche Les 12 permissions', 'Palette cosmique', 'Univers sémantique'],
-    accentColor: 'sky',
-    featured: false,
-    visuals: [
-      {
-        id: 'vis-bien-etre-12',
-        url: '/assets/extracted/mood_333.png',
-        alt: 'Affiche Les 12 permissions sur fond bleu nuit étoilé',
-        caption: 'Les 12 permissions (Word)',
-        updatedAt: '2026-11-16T00:00:00.000Z',
-      },
-    ],
-  },
-  {
     id: 'mariage-papeterie',
     title: 'Thème Mariage — Papeterie & plans de table',
     category: 'Communication & Événements',
@@ -333,7 +213,7 @@ export const INITIAL_PROJECTS: ProjectItem[] = [
       'Travailler la symétrie, les cadres fins or et noir, les contrastes typographiques et les motifs botaniques au trait pour des logos immédiatement identifiables.',
     deliverables: ['Logo CÉDRINE_ARTISTE', 'Logo Beauty Time Spa & Détente', 'Visuel Convention Tatoo Flash'],
     accentColor: 'sage',
-    featured: false,
+    featured: true,
     visuals: [
       {
         id: 'vis-logo-cedrine',
@@ -354,6 +234,126 @@ export const INITIAL_PROJECTS: ProjectItem[] = [
         url: '/assets/extracted/mood_129.png',
         alt: 'Logo botanique noir et blanc Convention Tatoo Flash',
         caption: 'Convention Tatoo Flash',
+        updatedAt: '2026-11-16T00:00:00.000Z',
+      },
+    ],
+  },
+  {
+    id: 'halloween-parcs',
+    title: 'Parcs d’attractions Halloween — Du Labyrinthe au parc enfant',
+    category: 'Créations visuelles',
+    context: 'Moodboard & maquettes Figma / Canva',
+    role: 'Direction artistique, conception d’affiche, logo et maquettes de site web',
+    challenge:
+      'Décliner un même thème saisonnier (Halloween) pour deux publics distincts : sensations fortes pour adultes vs univers ludique et rassurant pour enfants.',
+    idea:
+      'D’un côté, une affiche texturée sang et parchemin pour « Le Labyrinthe » (#9F1E1E) ; de l’autre, un site coloré pour « La vague enchantée » mêlant violet, orange et vert (#5E2BB7, #ED8014, #0DD173) autour de mascottes et du slogan « Une photo ou un sort ? ».',
+    deliverables: ['Maquettes web Figma', 'Affiche Le Labyrinthe', 'Logo La vague enchantée', 'Palettes dédiées'],
+    accentColor: 'lilac',
+    featured: true,
+    visuals: [
+      {
+        id: 'vis-halloween-labyrinthe',
+        url: '/assets/extracted/mood_11.png',
+        alt: 'Affiche Le Labyrinthe Halloween pour public adulte',
+        caption: 'Le Labyrinthe — Public adulte',
+        updatedAt: '2026-11-16T00:00:00.000Z',
+      },
+      {
+        id: 'vis-halloween-web',
+        url: '/assets/extracted/mood_17.png',
+        alt: 'Maquettes de site web Halloween pour parc d’attractions enfant (Figma et Canva)',
+        caption: 'Site Halloween — Figma & Canva',
+        updatedAt: '2026-11-16T00:00:00.000Z',
+      },
+      {
+        id: 'vis-halloween-logo',
+        url: '/assets/extracted/mood_18.png',
+        alt: 'Logo La vague enchantée',
+        caption: 'Logo La vague enchantée',
+        updatedAt: '2026-11-16T00:00:00.000Z',
+      },
+    ],
+  },
+  {
+    id: 'fete-du-raisin',
+    title: 'Thème « Fête du raisin » — Affiches Canva & Figma',
+    category: 'Créations visuelles',
+    context: 'Inspiration « Pruneau Show » à Agen',
+    role: 'Conception de piste créative, déclinaisons d’affiches et recherche chromatique',
+    challenge:
+      'Valoriser une fête de village conviviale autour d’un produit local et d’une programmation musicale de plus de 80 artistes.',
+    idea:
+      'Explorer deux écritures complémentaires : une affiche champêtre réalisée sur Canva et une composition graphique géométrique réalisée sur Figma autour des teintes Studio (#7641BA), Cruise (#BFEED7) et Golden Sand (#EED171).',
+    deliverables: ['Affiche Canva', 'Affiche Figma', 'Planche d’inspiration & palette'],
+    accentColor: 'coral',
+    featured: false,
+    visuals: [
+      {
+        id: 'vis-fete-raisin',
+        url: '/assets/extracted/mood_3.png',
+        alt: 'Planche Fête du raisin comparant les créations Canva et Figma avec palette de couleurs',
+        caption: 'Canva & Figma — Fête du raisin',
+        updatedAt: '2026-11-16T00:00:00.000Z',
+      },
+    ],
+  },
+  {
+    id: 'noel-jouets-gala',
+    title: 'Noël ! Grand Gala & Magasin « Les Jouets en Bois »',
+    category: 'Créations visuelles',
+    context: 'Campagne fêtes de fin d’année (affiche, flyer & site)',
+    role: 'Création d’affiches, identité visuelle du chalet et illustration chaleureuse',
+    challenge:
+      'Transmettre la chaleur d’un foyer et l’esprit artisanal de Noël tout en gardant des informations événementielles et horaires parfaitement lisibles.',
+    idea:
+      'Associer une affiche « Grand Gala de Noël » à l’effet peinture à la main (vert sapin, or et rouge carmin) et un support chaleureux pour « Les Jouets en Bois » centré sur une scène de cheminée et des tons doux (#E7AD83, #C9901B, #CF0303).',
+    deliverables: ['Affiche Grand Gala', 'Flyer magasin de jouets', 'Logo & illustration'],
+    accentColor: 'pink',
+    featured: true,
+    visuals: [
+      {
+        id: 'vis-noel-foyer',
+        url: '/assets/extracted/mood_100.jpg',
+        alt: 'Illustration chaleureuse de cheminée et salon de Noël',
+        caption: 'Illustration chaleur du foyer',
+        updatedAt: '2026-11-16T00:00:00.000Z',
+      },
+      {
+        id: 'vis-noel-magasin',
+        url: '/assets/extracted/mood_96.png',
+        alt: 'Affiche Noël approche pour le magasin Les Jouets en Bois',
+        caption: 'Noël approche — Les Jouets en Bois',
+        updatedAt: '2026-11-16T00:00:00.000Z',
+      },
+      {
+        id: 'vis-noel-gala',
+        url: '/assets/extracted/mood_97.jpg',
+        alt: 'Affiche Grand Gala de Noël façon peinture à la main',
+        caption: 'Grand Gala de Noël — Effet peinture',
+        updatedAt: '2026-11-16T00:00:00.000Z',
+      },
+    ],
+  },
+  {
+    id: 'bien-etre-permissions',
+    title: 'Thème Bien-être — Affiche « Les 12 permissions »',
+    category: 'Créations visuelles',
+    context: 'Création éditoriale et direction bien-être (Word & Pixabay)',
+    role: 'Mise en page, hiérarchisation typographique et recherche atmosphérique',
+    challenge:
+      'Rendre 12 principes de bien-être et d’affirmation de soi agréables à lire, apaisants et visuellement mémorables.',
+    idea:
+      'Composer une nuit étoilée bleu profond (#0F2779 vers #4234B9) portée par des constellations fines et un univers cosmique doux autour de mots-clés : Douceur, Évasion, Tranquillité, Amour de soi.',
+    deliverables: ['Affiche Les 12 permissions', 'Palette cosmique', 'Univers sémantique'],
+    accentColor: 'sky',
+    featured: false,
+    visuals: [
+      {
+        id: 'vis-bien-etre-12',
+        url: '/assets/extracted/mood_333.png',
+        alt: 'Affiche Les 12 permissions sur fond bleu nuit étoilé',
+        caption: 'Les 12 permissions (Word)',
         updatedAt: '2026-11-16T00:00:00.000Z',
       },
     ],
@@ -576,8 +576,8 @@ export const APPRENTICESHIP_DETAILS = {
     'https://www.ascencia-business-school.com/formations/marketing/mastere-management-strategie-marketing/',
   duration: '2 ans (2026–2028)',
   rhythm: '2 jours en formation / 3 jours en entreprise',
-  location: 'Chessy (77700), Île-de-France',
-  mobility: "Chessy, Meaux et le long du RER A jusqu'à Paris",
+  location: 'Chessy (77700), Val d’Europe — Seine-et-Marne (77)',
+  mobility: "Chessy, Serris, Montévrain, Marne-la-Vallée, Meaux et tout l’axe RER A jusqu'à Paris",
   startDate: 'Immédiatement',
   missions: [
     'Analyse du produit ou service à vendre et de sa valeur',

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ArrowUpRight, Download, Maximize2, Sparkles, X } from 'lucide-react';
+import { ArrowUpRight, Download, Images, Maximize2, Sparkles, Star, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { MediaAsset, ProjectCategory, ProjectItem } from '../types/portfolio';
 import { EditorialImageSlot } from './EditorialImageSlot';
@@ -31,6 +31,8 @@ const ACCENT_SURFACE: Record<ProjectItem['accentColor'], string> = {
   sky: 'from-[#DFEEF9] to-[#FFFDF9] dark:from-[#23323D] dark:to-[#24201E]',
 };
 
+const SPOTLIGHT_PROJECT_IDS = new Set(['mariage-papeterie', 'logos-minimalistes']);
+
 export function ProjectsSection({
   projects,
   selectedProject,
@@ -44,8 +46,14 @@ export function ProjectsSection({
     title: string;
   } | null>(null);
 
-  const visibleProjects =
+  const filteredProjects =
     filter === 'Tous' ? projects : projects.filter((p) => p.category === filter);
+
+  const visibleProjects = [...filteredProjects].sort((a, b) => {
+    const aSpot = SPOTLIGHT_PROJECT_IDS.has(a.id) ? 0 : 1;
+    const bSpot = SPOTLIGHT_PROJECT_IDS.has(b.id) ? 0 : 1;
+    return aSpot - bSpot;
+  });
 
   useEffect(() => {
     if (!selectedProject || lightbox) return;
@@ -138,6 +146,8 @@ export function ProjectsSection({
             <AnimatePresence mode="popLayout">
               {visibleProjects.map((project, idx) => {
                 const primaryVisual = project.visuals[0];
+                const isSpotlight = SPOTLIGHT_PROJECT_IDS.has(project.id);
+                const visualCount = project.visuals.length;
                 return (
                   <motion.article
                     layout={!reducedMotion}
@@ -171,9 +181,25 @@ export function ProjectsSection({
                         onSelectProject(project);
                       }
                     }}
-                    className="group flex flex-col justify-between rounded-[28px] border border-white/90 bg-white/85 p-5 shadow-[0_18px_40px_-16px_rgba(37,37,37,0.14)] backdrop-blur-md cursor-pointer transition-colors duration-400 dark:border-[#F5EBDD]/15 dark:bg-[#2B2722]/90 dark:shadow-[0_20px_44px_-16px_rgba(0,0,0,0.5)]"
+                    className={`group relative flex flex-col justify-between rounded-[28px] border p-5 shadow-[0_18px_40px_-16px_rgba(37,37,37,0.14)] backdrop-blur-md cursor-pointer transition-colors duration-400 ${
+                      isSpotlight
+                        ? 'border-[#C94F7C]/55 bg-white/95 ring-2 ring-[#C94F7C]/15 dark:border-[#F08AA8]/55 dark:bg-[#312A24]/95 dark:ring-[#F08AA8]/15'
+                        : 'border-white/90 bg-white/85 dark:border-[#F5EBDD]/15 dark:bg-[#2B2722]/90'
+                    } dark:shadow-[0_20px_44px_-16px_rgba(0,0,0,0.5)]`}
                   >
                     <div>
+                      {isSpotlight && (
+                        <div className="mb-3 flex items-center justify-between gap-2">
+                          <span className="inline-flex items-center gap-1.5 font-hand text-lg font-bold text-[#C94F7C] dark:text-[#F08AA8]">
+                            <Star className="h-3.5 w-3.5 fill-current" />
+                            <span>Sélection mise en avant</span>
+                          </span>
+                          <span className="text-[11px] font-bold uppercase tracking-wider text-[#8D690B] dark:text-[#F5D87A]">
+                            {visualCount} visuels associés
+                          </span>
+                        </div>
+                      )}
+
                       <div
                         className={`relative aspect-[4/3] w-full overflow-hidden rounded-[20px] bg-gradient-to-br ${
                           ACCENT_SURFACE[project.accentColor]
@@ -189,6 +215,12 @@ export function ProjectsSection({
                               draggable={false}
                               className="h-full w-full select-none object-cover transition-transform duration-500 group-hover:scale-108"
                             />
+                            <span className="pointer-events-none absolute top-2.5 left-2.5 z-10 inline-flex items-center gap-1.5 rounded-full border border-white/40 bg-[#252525]/82 px-2.5 py-1 text-[11px] font-bold text-white shadow-sm backdrop-blur-xs">
+                              <Images className="h-3.5 w-3.5 text-[#F1D16F]" />
+                              <span>
+                                {visualCount} visuel{visualCount > 1 ? 's' : ''} associé{visualCount > 1 ? 's' : ''}
+                              </span>
+                            </span>
                             <button
                               type="button"
                               aria-label={`Agrandir les visuels de ${project.title}`}
@@ -229,16 +261,55 @@ export function ProjectsSection({
                         )}
                       </div>
 
-                      <div className="mt-4 flex items-center justify-between gap-2 text-xs font-medium text-[#252525]/65 dark:text-[#F5EBDD]/65">
-                        <span>{project.category}</span>
-                        {project.visuals.length > 0 && (
-                          <span>
-                            {project.visuals.length} visuel{project.visuals.length > 1 ? 's' : ''}
+                      {visualCount > 1 && (
+                        <div className="mt-3 flex items-center gap-2">
+                          <div className="grid flex-1 grid-cols-3 gap-2">
+                            {project.visuals.slice(0, 3).map((vis, visIdx) => (
+                              <button
+                                key={vis.id}
+                                type="button"
+                                aria-label={`Voir le visuel ${visIdx + 1} sur ${visualCount} : ${vis.caption || project.title}`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setLightbox({
+                                    assets: project.visuals,
+                                    index: visIdx,
+                                    title: project.title,
+                                  });
+                                }}
+                                className="group/thumb relative aspect-[4/3] overflow-hidden rounded-xl border border-[#252525]/12 bg-[#F5EBDD]/60 transition-transform duration-200 hover:-translate-y-0.5 hover:border-[#C94F7C] cursor-pointer dark:border-[#F5EBDD]/15 dark:bg-[#24201E]"
+                              >
+                                <img
+                                  src={withBase(vis.url)}
+                                  alt={vis.alt || vis.caption || project.title}
+                                  loading="lazy"
+                                  draggable={false}
+                                  className="h-full w-full object-cover transition-transform duration-300 group-hover/thumb:scale-105"
+                                />
+                                <span className="pointer-events-none absolute bottom-1 left-1 rounded bg-[#252525]/75 px-1.5 py-0.5 text-[9px] font-bold text-white">
+                                  {visIdx + 1}/{visualCount}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs">
+                        <span className="font-medium text-[#252525]/70 dark:text-[#F5EBDD]/70">
+                          {project.category}
+                        </span>
+                        {visualCount > 0 && (
+                          <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#C94F7C]/12 px-2.5 py-1 font-bold text-[#C94F7C] dark:bg-[#F08AA8]/15 dark:text-[#F08AA8]">
+                            <Images className="h-3.5 w-3.5" />
+                            <span>
+                              {visualCount} visuel{visualCount > 1 ? 's' : ''} associé{visualCount > 1 ? 's' : ''}
+                            </span>
                           </span>
                         )}
                       </div>
 
-                      <h3 className="font-display mt-1.5 text-xl font-bold leading-snug text-[#252525] group-hover:text-[#C94F7C] transition-colors dark:text-[#F5EBDD] dark:group-hover:text-[#F08AA8]">
+                      <h3 className="font-display mt-2 text-xl font-bold leading-snug text-[#252525] group-hover:text-[#C94F7C] transition-colors dark:text-[#F5EBDD] dark:group-hover:text-[#F08AA8]">
                         {project.title}
                       </h3>
 
@@ -338,8 +409,12 @@ export function ProjectsSection({
               {selectedProject.visuals.length > 0 && (
                 <div className="mt-8">
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <p className="font-display text-lg font-bold text-[#252525] dark:text-[#F5EBDD]">
-                      {selectedProject.visuals.length > 1 ? 'Les visuels' : 'Le visuel'}
+                    <p className="font-display inline-flex items-center gap-2 text-lg font-bold text-[#252525] dark:text-[#F5EBDD]">
+                      <Images className="h-4 w-4 text-[#C94F7C] dark:text-[#F08AA8]" />
+                      <span>
+                        {selectedProject.visuals.length}{' '}
+                        {selectedProject.visuals.length > 1 ? 'visuels associés' : 'visuel associé'}
+                      </span>
                     </p>
                     <span className="font-hand text-lg text-[#C94F7C] dark:text-[#F08AA8]">
                       Cliquez sur une image pour l&rsquo;agrandir en entier

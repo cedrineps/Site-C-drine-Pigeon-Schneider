@@ -168,10 +168,11 @@ export function HeroSection({
               transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="mt-5 max-w-xl text-base leading-relaxed text-[#252525]/85 dark:text-[#F5EBDD]/82 sm:text-[17px]"
             >
-              Issue du droit et du management, je me destine à la <strong>stratégie marketing pure</strong> :
-              comprendre en profondeur le produit ou le service à vendre, identifier à qui et
-              comment le vendre, puis tracer la ligne directrice des visuels et vidéos
-              publicitaires pour donner une cohérence forte à chaque marque.
+              Issue du droit et du management, je me destine à la <strong>stratégie marketing pure</strong> et
+              recherche une <strong>alternance (2026–2028) près de Chessy (77)</strong> : comprendre en
+              profondeur le produit ou le service à vendre, identifier à qui et comment le vendre, puis
+              tracer la ligne directrice des visuels et vidéos publicitaires pour donner une cohérence
+              forte à chaque marque.
             </motion.p>
 
             {/* Primary & Secondary Pill CTAs */}
@@ -343,10 +344,10 @@ export function HeroSection({
               </span>
               <div>
                 <p className="text-sm font-semibold text-[#252525] dark:text-[#F5EBDD] sm:text-base">
-                  Je cherche une alternance de 2 ans
+                  Je cherche une alternance de 2 ans près de Chessy (77)
                 </p>
                 <p className="text-xs text-[#252525]/70 dark:text-[#F5EBDD]/70 sm:text-sm">
-                  Mastère Stratégie Marketing · 2026–2028 · Chessy &amp; RER A jusqu&rsquo;à Paris
+                  Mastère Stratégie Marketing · 2026–2028 · Chessy, Val d&rsquo;Europe, Marne-la-Vallée, Meaux &amp; RER A jusqu&rsquo;à Paris
                 </p>
               </div>
             </div>
