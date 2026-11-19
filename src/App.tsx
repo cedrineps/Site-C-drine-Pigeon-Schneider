@@ -216,6 +216,7 @@ export default function App() {
         />
 
         <KineticMarquee
+          reverse
           items={[
             'Stratégie marketing pure',
             'Comprendre le produit ou le service',
@@ -236,6 +237,7 @@ export default function App() {
         />
 
         <KineticMarquee
+          reverse
           items={[
             'Les mots',
             'Les images',
