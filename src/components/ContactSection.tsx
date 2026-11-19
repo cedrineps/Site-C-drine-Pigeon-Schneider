@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { APPRENTICESHIP_DETAILS, CONTACT_INFO } from '../data/initialPortfolio';
+import { ContactForm } from './ContactForm';
 import { CvPreviewCard } from './CvPreviewCard';
 import { ScrollReveal } from './ScrollReveal';
 import { STATIC_CV_PDF_PATH, withBase } from '../utils/assetUrl';
@@ -235,6 +236,11 @@ export function ContactSection({
             </div>
           </motion.div>
         </div>
+
+        {/* Interactive Contact Form */}
+        <ScrollReveal reducedMotion={reducedMotion} yOffset={24}>
+          <ContactForm reducedMotion={reducedMotion} />
+        </ScrollReveal>
 
         {/* Interactive PDF CV Preview */}
         <ScrollReveal reducedMotion={reducedMotion} yOffset={26}>

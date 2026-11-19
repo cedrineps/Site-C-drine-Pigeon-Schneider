@@ -33,6 +33,7 @@ export function EditorialImageSlot({
 }: EditorialImageSlotProps) {
   const [imgFailed, setImgFailed] = useState(false);
   const hasValidImage = Boolean(asset?.url && !imgFailed);
+  const isInteractive = Boolean(onClick);
 
   const fallbackGradients: Record<EditorialImageSlotProps['variant'], string> = {
     portrait:
@@ -48,9 +49,9 @@ export function EditorialImageSlot({
   return (
     <motion.div
       onClick={onClick}
-      role={onClick ? 'button' : undefined}
-      tabIndex={onClick ? 0 : undefined}
-      data-cursor={onClick ? 'Agrandir' : undefined}
+      role={isInteractive ? 'button' : undefined}
+      tabIndex={isInteractive ? 0 : undefined}
+      data-cursor={isInteractive ? 'Agrandir' : undefined}
       onKeyDown={
         onClick
           ? (e) => {
@@ -63,21 +64,27 @@ export function EditorialImageSlot({
       }
       initial={false}
       animate={{ rotate: defaultRotate }}
-      whileHover={{
-        rotate: 0,
-        scale: 1.025,
-        y: -5,
-      }}
-      whileTap={onClick ? { scale: 0.985 } : undefined}
+      whileHover={
+        isInteractive
+          ? {
+              rotate: 0,
+              scale: 1.025,
+              y: -5,
+            }
+          : undefined
+      }
+      whileTap={isInteractive ? { scale: 0.985 } : undefined}
       transition={{ type: 'spring', stiffness: 420, damping: 28 }}
-      className={`group relative transform-gpu will-change-transform rounded-[26px] border border-[#252525]/10 bg-white p-3 pb-8 shadow-[0_20px_44px_-16px_rgba(37,37,37,0.18)] transition-colors duration-400 dark:border-[#F5EBDD]/15 dark:bg-[#2C2725] dark:shadow-[0_22px_46px_-14px_rgba(0,0,0,0.55)] ${
-        onClick ? 'cursor-pointer' : ''
+      className={`relative transform-gpu will-change-transform rounded-[26px] border border-[#252525]/10 bg-white p-3 pb-8 shadow-[0_20px_44px_-16px_rgba(37,37,37,0.18)] transition-colors duration-400 dark:border-[#F5EBDD]/15 dark:bg-[#2C2725] dark:shadow-[0_22px_46px_-14px_rgba(0,0,0,0.55)] ${
+        isInteractive ? 'group cursor-pointer' : ''
       } ${className}`}
     >
       {/* Scrapbook Washi Tape Strip */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -top-3 left-1/2 z-20 h-6 w-20 -translate-x-1/2 -rotate-2 rounded-sm opacity-85 shadow-sm transition-transform duration-200 group-hover:rotate-1"
+        className={`pointer-events-none absolute -top-3 left-1/2 z-20 h-6 w-20 -translate-x-1/2 -rotate-2 rounded-sm opacity-85 shadow-sm ${
+          isInteractive ? 'transition-transform duration-200 group-hover:rotate-1' : ''
+        }`}
         style={{
           backgroundColor: tapeColor,
           backgroundImage:
@@ -101,17 +108,19 @@ export function EditorialImageSlot({
               decoding={priority ? 'sync' : 'async'}
               draggable={false}
               onError={() => setImgFailed(true)}
-              className={`h-full w-full transform-gpu select-none transition-transform duration-300 ease-out group-hover:scale-[1.03] ${
-                fitContain ? 'object-contain p-1.5' : 'object-cover object-top'
-              }`}
+              className={`h-full w-full transform-gpu select-none ${
+                isInteractive ? 'transition-transform duration-300 ease-out group-hover:scale-[1.03]' : ''
+              } ${fitContain ? 'object-contain p-1.5' : 'object-cover object-top'}`}
             />
-            {onClick && (
-              <span className="pointer-events-none absolute top-2.5 right-2.5 inline-flex items-center gap-1 rounded-full border border-white/40 bg-[#252525]/65 px-2.5 py-1 text-[10px] font-semibold text-white shadow-sm transition-transform duration-200 group-hover:scale-105">
-                <Maximize2 className="h-3 w-3" />
-                <span>Agrandir</span>
-              </span>
+            {isInteractive && (
+              <>
+                <span className="pointer-events-none absolute top-2.5 right-2.5 inline-flex items-center gap-1 rounded-full border border-white/40 bg-[#252525]/65 px-2.5 py-1 text-[10px] font-semibold text-white shadow-sm transition-transform duration-200 group-hover:scale-105">
+                  <Maximize2 className="h-3 w-3" />
+                  <span>Agrandir</span>
+                </span>
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#252525]/45 via-transparent to-transparent opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+              </>
             )}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#252525]/45 via-transparent to-transparent opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
             {variant !== 'portrait' && (
               <div
                 aria-hidden="true"
@@ -154,12 +163,20 @@ export function EditorialImageSlot({
 
       {/* Handwritten Scrapbook Caption */}
       <div className="mt-2.5 flex items-center justify-between px-1">
-        <p className="font-hand text-lg leading-none text-[#252525]/85 transition-colors group-hover:text-[#C94F7C] dark:text-[#F5EBDD]/90 dark:group-hover:text-[#F08AA8]">
+        <p
+          className={`font-hand text-lg leading-none text-[#252525]/85 dark:text-[#F5EBDD]/90 ${
+            isInteractive
+              ? 'transition-colors group-hover:text-[#C94F7C] dark:group-hover:text-[#F08AA8]'
+              : ''
+          }`}
+        >
           {asset?.caption || fallbackTitle}
         </p>
-        <span className="font-hand text-sm text-[#252525]/55 opacity-0 transition-opacity duration-200 group-hover:opacity-100 dark:text-[#F5EBDD]/60">
-          ↗
-        </span>
+        {isInteractive && (
+          <span className="font-hand text-sm text-[#252525]/55 opacity-0 transition-opacity duration-200 group-hover:opacity-100 dark:text-[#F5EBDD]/60">
+            ↗
+          </span>
+        )}
       </div>
     </motion.div>
   );

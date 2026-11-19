@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -12,7 +12,7 @@ import {
   Sparkles,
   Users,
 } from 'lucide-react';
-import { motion, useMotionValue, useScroll, useSpring, useTransform } from 'motion/react';
+import { motion } from 'motion/react';
 import { APPRENTICESHIP_DETAILS, PROFILE_CARDS, REPERES_ITEMS } from '../data/initialPortfolio';
 import { MediaAsset, ProjectItem, SectionTheme } from '../types/portfolio';
 import { EditorialImageSlot } from './EditorialImageSlot';
@@ -79,46 +79,14 @@ export function HeroSection({
   onSelectProject,
 }: HeroSectionProps) {
   const cvHref = hasBackendApi ? '/api/cv' : withBase(STATIC_CV_PDF_PATH);
-  const sectionRef = useRef<HTMLElement>(null);
   const [heroLightbox, setHeroLightbox] = useState<{
     assets: MediaAsset[];
     index: number;
     title: string;
   } | null>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start start', 'end start'],
-  });
-
-  // Scroll-linked parallax layers for light 3D shapes only
-  const orbFastY = useTransform(scrollYProgress, [0, 1], [0, -70]);
-  const orbSlowY = useTransform(scrollYProgress, [0, 1], [0, 45]);
-
-  // Lightweight mouse parallax restricted strictly to floating 3D accents (never heavy photo frames)
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const smoothX = useSpring(mouseX, { stiffness: 200, damping: 26 });
-  const smoothY = useSpring(mouseY, { stiffness: 200, damping: 26 });
-  const glossX = useTransform(smoothX, [-1, 1], [-14, 14]);
-  const glossY = useTransform(smoothY, [-1, 1], [-12, 12]);
-
-  const handleCollageMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (reducedMotion) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const nx = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-    const ny = ((e.clientY - rect.top) / rect.height) * 2 - 1;
-    mouseX.set(nx);
-    mouseY.set(ny);
-  };
-
-  const handleCollageLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
 
   return (
     <section
-      ref={sectionRef}
       id="hero"
       className="relative overflow-hidden pt-28 pb-20 sm:pt-36 sm:pb-24"
     >
@@ -265,12 +233,8 @@ export function HeroSection({
             </motion.div>
           </div>
 
-          {/* Right Column: Interactive Mouse-Parallax Portrait Collage + 3D Glossy Shapes */}
-          <div
-            onMouseMove={handleCollageMove}
-            onMouseLeave={handleCollageLeave}
-            className="relative z-10 lg:col-span-6"
-          >
+          {/* Right Column: Portrait Collage + Static Decorative 3D Shapes */}
+          <div className="relative z-10 lg:col-span-6">
             <div className="relative mx-auto max-w-[460px] py-4 sm:py-6">
               {/* Background Color Halo directly behind portrait (pure radial gradient, zero blur filter) */}
               <div
@@ -282,55 +246,30 @@ export function HeroSection({
                 }}
               />
 
-              {/* Sculptural Glossy 3D Shape 1: Sparkle Tile */}
-              <motion.div
+              {/* Static Decorative Shape 1: Sparkle Tile */}
+              <div
                 aria-hidden="true"
-                style={reducedMotion ? undefined : { x: glossX, y: orbFastY }}
-                animate={
-                  reducedMotion
-                    ? undefined
-                    : { rotate: [12, 18, 12] }
-                }
-                transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
-                className="pointer-events-none absolute -top-2 -left-4 z-20 flex h-16 w-16 transform-gpu items-center justify-center rounded-2xl border border-white/85 bg-gradient-to-br from-[#F1D16F]/90 to-[#E7A49B]/85 shadow-lg dark:border-[#F5EBDD]/25 sm:-left-8"
+                className="pointer-events-none absolute -top-2 -left-4 z-20 flex h-16 w-16 rotate-12 items-center justify-center rounded-2xl border border-white/85 bg-gradient-to-br from-[#F1D16F]/90 to-[#E7A49B]/85 shadow-lg dark:border-[#F5EBDD]/25 sm:-left-8"
               >
                 <Sparkles className="h-6 w-6 text-[#252525]/75" />
-              </motion.div>
+              </div>
 
-              {/* Sculptural Glossy 3D Shape 2: Iridescent Pearl Orb */}
-              <motion.div
+              {/* Static Decorative Shape 2: Iridescent Pearl Orb */}
+              <div
                 aria-hidden="true"
-                style={reducedMotion ? undefined : { x: glossX, y: glossY }}
-                animate={
-                  reducedMotion
-                    ? undefined
-                    : { rotate: [-10, -18, -10] }
-                }
-                transition={{ duration: 6.5, repeat: Infinity, ease: 'easeInOut' }}
-                className="pointer-events-none absolute top-14 -right-4 z-20 h-14 w-14 transform-gpu rounded-full border border-white/90 bg-gradient-to-tr from-[#CDB8F0]/90 via-[#E7B6C5]/85 to-white shadow-lg dark:border-[#F5EBDD]/25 sm:-right-6"
+                className="pointer-events-none absolute top-14 -right-4 z-20 h-14 w-14 -rotate-12 rounded-full border border-white/90 bg-gradient-to-tr from-[#CDB8F0]/90 via-[#E7B6C5]/85 to-white shadow-lg dark:border-[#F5EBDD]/25 sm:-right-6"
               />
 
-              {/* Sculptural Glossy 3D Shape 3: Coral Floating Pill Capsule */}
-              <motion.div
+              {/* Static Decorative Shape 3: Coral Pill Capsule */}
+              <div
                 aria-hidden="true"
-                style={reducedMotion ? undefined : { x: glossX, y: orbSlowY }}
-                animate={
-                  reducedMotion
-                    ? undefined
-                    : { rotate: [-20, -12, -20] }
-                }
-                transition={{ duration: 7.2, repeat: Infinity, ease: 'easeInOut' }}
-                className="pointer-events-none absolute top-1/2 -left-8 z-20 hidden h-8 w-16 transform-gpu rounded-full border border-white/85 bg-gradient-to-r from-[#E7A49B]/90 to-[#F6C9A3]/90 shadow-md dark:border-[#F5EBDD]/25 sm:block"
+                className="pointer-events-none absolute top-1/2 -left-8 z-20 hidden h-8 w-16 -rotate-[16deg] rounded-full border border-white/85 bg-gradient-to-r from-[#E7A49B]/90 to-[#F6C9A3]/90 shadow-md dark:border-[#F5EBDD]/25 sm:block"
               />
 
-              {/* Sculptural Glossy 3D Shape 4: Sky Soft Ring */}
-              <motion.div
+              {/* Static Decorative Shape 4: Sky Soft Ring */}
+              <div
                 aria-hidden="true"
-                animate={
-                  reducedMotion ? undefined : { rotate: [0, 360] }
-                }
-                transition={{ duration: 24, repeat: Infinity, ease: 'linear' }}
-                className="pointer-events-none absolute -right-2 bottom-20 z-10 hidden h-12 w-12 transform-gpu rounded-full border-[5px] border-white/85 bg-[#B7D8F2]/55 shadow-md dark:border-[#F5EBDD]/30 sm:block"
+                className="pointer-events-none absolute -right-2 bottom-20 z-10 hidden h-12 w-12 rounded-full border-[5px] border-white/85 bg-[#B7D8F2]/55 shadow-md dark:border-[#F5EBDD]/30 sm:block"
               />
 
               {/* Main Natural Portrait Frame — snappy GPU-only entrance */}
@@ -372,15 +311,11 @@ export function HeroSection({
               </motion.div>
 
               {/* Handwritten floating sticker note */}
-              <motion.div
-                whileHover={reducedMotion ? undefined : { rotate: 0, scale: 1.05 }}
-                transition={{ type: 'spring', stiffness: 360, damping: 24 }}
-                className="pointer-events-auto absolute bottom-10 left-0 z-20 hidden -rotate-6 rounded-2xl border border-white/90 bg-white/95 px-3.5 py-2 shadow-sm dark:border-[#F5EBDD]/20 dark:bg-[#2C2725] sm:block"
-              >
+              <div className="pointer-events-none absolute bottom-10 left-0 z-20 hidden -rotate-6 rounded-2xl border border-white/90 bg-white/95 px-3.5 py-2 shadow-sm dark:border-[#F5EBDD]/20 dark:bg-[#2C2725] sm:block">
                 <p className="font-hand text-lg leading-tight text-[#252525] dark:text-[#F5EBDD]">
                   Scrapbook &amp; stratégie ✦
                 </p>
-              </motion.div>
+              </div>
             </div>
           </div>
         </div>

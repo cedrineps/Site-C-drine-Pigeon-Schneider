@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from 'motion/react';
 import { TIMELINE_ITEMS } from '../data/initialPortfolio';
 import { MediaAsset } from '../types/portfolio';
 import { EditorialImageSlot } from './EditorialImageSlot';
+import { RecommendationsBlock } from './RecommendationsBlock';
 import { ScrollReveal } from './ScrollReveal';
 
 interface AboutSectionProps {
@@ -179,33 +180,23 @@ export function AboutSection({ portrait, reducedMotion, darkMode = false }: Abou
                   }
                   whileInView={{ opacity: 1, y: 0, rotate: pillar.rotate }}
                   viewport={{ once: true, amount: 0.2 }}
-                  whileHover={
-                    reducedMotion
-                      ? undefined
-                      : {
-                          rotate: 0,
-                          y: -8,
-                          scale: 1.025,
-                          boxShadow: '0 28px 50px -16px rgba(37, 37, 37, 0.2)',
-                        }
-                  }
                   transition={{ type: 'spring', stiffness: 260, damping: 18, delay: index * 0.08 }}
                   style={{
                     backgroundColor: darkMode ? pillar.darkSurface : pillar.surface,
                   }}
-                  className="group relative flex flex-col justify-between rounded-[26px] border border-white/90 p-7 shadow-[0_18px_38px_-16px_rgba(37,37,37,0.13)] backdrop-blur-md transition-colors duration-400 dark:border-[#F5EBDD]/15"
+                  className="relative flex flex-col justify-between rounded-[26px] border border-white/90 p-7 shadow-[0_18px_38px_-16px_rgba(37,37,37,0.13)] backdrop-blur-md transition-colors duration-400 dark:border-[#F5EBDD]/15"
                 >
                   {/* Washi Tape */}
                   <div
                     aria-hidden="true"
-                    className="pointer-events-none absolute -top-2.5 left-9 h-5 w-16 -rotate-2 rounded-sm opacity-90 shadow-xs transition-transform duration-300 group-hover:rotate-2"
+                    className="pointer-events-none absolute -top-2.5 left-9 h-5 w-16 -rotate-2 rounded-sm opacity-90 shadow-xs"
                     style={{ backgroundColor: pillar.tapeColor }}
                   />
 
                   <div>
                     <div className="flex items-center justify-between gap-3">
                       <span
-                        className="gloss-object flex h-11 w-11 items-center justify-center rounded-2xl border border-white/85 bg-white/80 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110 dark:border-[#F5EBDD]/20 dark:bg-[#24201E]/85"
+                        className="gloss-object flex h-11 w-11 items-center justify-center rounded-2xl border border-white/85 bg-white/80 dark:border-[#F5EBDD]/20 dark:bg-[#24201E]/85"
                         style={{ color: currentAccent }}
                       >
                         <Icon className="h-5 w-5" />
@@ -258,18 +249,13 @@ export function AboutSection({ portrait, reducedMotion, darkMode = false }: Abou
                 }
                 whileInView={{ opacity: 1, y: 0, rotate: step.rotate }}
                 viewport={{ once: true, amount: 0.15 }}
-                whileHover={
-                  reducedMotion
-                    ? undefined
-                    : { rotate: 0, y: -6, scale: 1.025 }
-                }
                 transition={{
                   type: 'spring',
                   stiffness: 270,
                   damping: 20,
                   delay: Math.min(index * 0.04, 0.25),
                 }}
-                className={`group relative rounded-[22px] p-6 transition-colors duration-400 ${
+                className={`relative rounded-[22px] p-6 transition-colors duration-400 ${
                   step.highlight
                     ? 'bg-[#252525] text-white shadow-[0_22px_42px_-16px_rgba(37,37,37,0.45)] dark:border dark:border-[#E7A49B]/40 dark:bg-[#35242B]'
                     : 'border border-white bg-white/85 text-[#252525] shadow-[0_14px_30px_-14px_rgba(37,37,37,0.12)] backdrop-blur-sm dark:border-[#F5EBDD]/15 dark:bg-[#2B2624]/90 dark:text-[#F5EBDD]'
@@ -278,7 +264,7 @@ export function AboutSection({ portrait, reducedMotion, darkMode = false }: Abou
                 {/* Washi tape */}
                 <div
                   aria-hidden="true"
-                  className="pointer-events-none absolute -top-2.5 left-8 h-5 w-16 -rotate-2 rounded-sm opacity-90 shadow-xs transition-transform duration-300 group-hover:rotate-1"
+                  className="pointer-events-none absolute -top-2.5 left-8 h-5 w-16 -rotate-2 rounded-sm opacity-90 shadow-xs"
                   style={{ backgroundColor: step.tapeColor }}
                 />
 
@@ -327,6 +313,11 @@ export function AboutSection({ portrait, reducedMotion, darkMode = false }: Abou
               </motion.article>
             ))}
           </div>
+        </ScrollReveal>
+
+        {/* Recommendation Letters */}
+        <ScrollReveal reducedMotion={reducedMotion} yOffset={26} className="mt-16 sm:mt-20">
+          <RecommendationsBlock reducedMotion={reducedMotion} />
         </ScrollReveal>
       </div>
     </section>

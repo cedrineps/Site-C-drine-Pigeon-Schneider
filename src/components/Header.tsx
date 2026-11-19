@@ -14,6 +14,7 @@ const NAV_LINKS: NavLinkItem[] = [
   { id: 'projects', label: 'Projets', theme: 'yellow' },
   { id: 'personality', label: 'Profil', theme: 'sage' },
   { id: 'contact', label: 'Contact', theme: 'pink' },
+  { id: 'contact-form', label: 'Formulaire', theme: 'pink' },
 ];
 
 const THEME_ACCENT: Record<SectionTheme, string> = {
@@ -91,7 +92,7 @@ export function Header({
         </motion.button>
 
         {/* Zone 2: 5 single-line nav links with elastic sliding underline */}
-        <nav aria-label="Navigation principale" className="hidden md:flex items-center gap-6">
+        <nav aria-label="Navigation principale" className="hidden md:flex items-center gap-4 lg:gap-6">
           {NAV_LINKS.map((item) => {
             const isActive = activeSection === item.id;
             return (

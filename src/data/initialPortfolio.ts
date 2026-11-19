@@ -602,3 +602,64 @@ export const CONTACT_INFO = {
   cvFileName: 'CV_de_Cédrine_PIGEON-SCHNEIDER.pdf',
   city: 'Chessy (77700)',
 };
+
+export interface RecommendationLetter {
+  id: string;
+  author: string;
+  role: string;
+  organization: string;
+  date: string;
+  documentTitle: string;
+  highlight: string;
+  quote: string;
+  pdfPath: string;
+  downloadName: string;
+  tapeColor: string;
+  surface: string;
+  darkSurface: string;
+  accentColor: string;
+  darkAccentColor: string;
+  rotate: number;
+}
+
+export const RECOMMENDATIONS: RecommendationLetter[] = [
+  {
+    id: 'reco-poujade',
+    author: 'Mme Hélène Poujade',
+    role: 'Maître de Conférences (MCF) · Centre de Droit des Affaires',
+    organization: 'Université Toulouse 1 – Capitole',
+    date: '1er décembre 2017',
+    documentTitle: 'Lettre de recommandation',
+    highlight: 'Vivacité d’esprit, finesse d’analyse & prise de parole devant 400 étudiants',
+    quote:
+      '« Ces précieux échanges sont à mon sens révélateurs d’une grande capacité d’écoute, d’un esprit vif et synthétique ainsi que d’une grande motivation […] cette volonté, cette rigueur et cette curiosité intellectuelles sont tout aussi précieuses lorsqu’il s’agit d’examiner les qualités et compétences d’un étudiant. »',
+    pdfPath: '/assets/aistudio/Mme_POUJADE_recommandation_1c52b927.pdf',
+    downloadName: 'Lettre_de_recommandation_Helene_Poujade.pdf',
+    tapeColor: '#CDB8F0',
+    surface: 'rgba(205, 184, 240, 0.24)',
+    darkSurface: 'rgba(205, 184, 240, 0.14)',
+    accentColor: '#6F4FA6',
+    darkAccentColor: '#D2BFF7',
+    rotate: -1.1,
+  },
+  {
+    id: 'reco-le-quere',
+    author: 'Maître Yves Le Quéré',
+    role: 'Notaire associé',
+    organization: 'Office Notarial · Villeneuve-sur-Lot',
+    date: '23 août 2018',
+    documentTitle: 'Attestation de stage & recommandation',
+    highlight: 'Facultés d’adaptation, travail d’équipe & rigueur professionnelle',
+    quote:
+      '« Cédrine a montré des facultés d’adaptation très développées pour s’intégrer parfaitement au travail de groupe, un excellent relationnel et a réalisé un important travail de très grande qualité. Son ouverture d’esprit, sa rigueur, et son envie de faire et de faire bien feront d’elle une excellente professionnelle. »',
+    pdfPath: '/assets/aistudio/Lettre_de_recommandation_Mai_tre_LE_QUERE_68c06e7e.pdf',
+    downloadName: 'Attestation_recommandation_Maitre_Le_Quere.pdf',
+    tapeColor: '#E7A49B',
+    surface: 'rgba(231, 164, 155, 0.24)',
+    darkSurface: 'rgba(231, 164, 155, 0.14)',
+    accentColor: '#C94F7C',
+    darkAccentColor: '#F08AA8',
+    rotate: 1.1,
+  },
+];
+

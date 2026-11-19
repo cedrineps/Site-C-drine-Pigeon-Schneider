@@ -235,7 +235,6 @@ export default function App() {
             'L’expérience proposée',
             'Figma · Canva · Milanote · KPI',
           ]}
-          reverse
           tilt={1}
           bgClass="bg-white/55 dark:bg-[#2A2523]/70"
           accentColor={darkMode ? '#D2BFF7' : '#6F4FA6'}
