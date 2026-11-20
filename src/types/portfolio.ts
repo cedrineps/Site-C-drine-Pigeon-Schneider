@@ -26,6 +26,9 @@ export interface ProjectItem {
   accentColor: 'coral' | 'lilac' | 'yellow' | 'sage' | 'pink' | 'sky';
   visuals: MediaAsset[];
   featured?: boolean;
+  externalUrl?: string;
+  externalLabel?: string;
+  externalNote?: string;
 }
 
 export interface MoodboardItem {

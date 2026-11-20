@@ -376,6 +376,10 @@ export const INITIAL_PROJECTS: ProjectItem[] = [
     ],
     accentColor: 'pink',
     featured: false,
+    externalUrl: 'https://l-pifemme.netlify.app',
+    externalLabel: 'Visiter le site L’Épifemme',
+    externalNote:
+      'Exercice scolaire : les informations figurant sur ce site (produits, avis, coordonnées) sont entièrement fictives.',
     visuals: [],
   },
   {
